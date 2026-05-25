@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-subtitle">
+    <a href="javascript:history.back()">&larr; Go Back</a>
+</div>
+
+<div class="glass-card" style="max-width: 900px; margin: 0 auto;">
+    <div class="card-header">
+        <h3 class="card-title">{{ action }}</h3>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.case.label }}</label>
+                {{ form.case }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.doctor.label }}</label>
+                {{ form.doctor }}
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.report_type.label }}</label>
+                {{ form.report_type }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.report_title.label }}</label>
+                {{ form.report_title }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ form.report_content.label }}</label>
+            {{ form.report_content }}
+        </div>
+        <div class="form-group">
+            <label class="form-label">{{ form.report_conclusions.label }}</label>
+            {{ form.report_conclusions }}
+        </div>
+        <div class="form-group">
+            <label class="form-label">{{ form.recommended_investigations.label }}</label>
+            {{ form.recommended_investigations }}
+        </div>
+
+        <hr style="border-color: var(--border-glass); margin: 2rem 0;">
+        <h4 style="margin-bottom: 1rem;">Court Details</h4>
+        
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.court_name.label }}</label>
+                {{ form.court_name }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.court_case_number.label }}</label>
+                {{ form.court_case_number }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.magistrate_district.label }}</label>
+                {{ form.magistrate_district }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.judge_name.label }}</label>
+                {{ form.judge_name }}
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">{{ form.lawyer_details.label }}</label>
+            {{ form.lawyer_details }}
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.report_status.label }}</label>
+                {{ form.report_status }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.remarks.label }}</label>
+                {{ form.remarks }}
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">Save Court Report</button>
+            <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

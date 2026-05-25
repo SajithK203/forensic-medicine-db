@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-subtitle">
+    <a href="javascript:history.back()">&larr; Go Back</a>
+</div>
+
+<div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+    <div class="card-header">
+        <h3 class="card-title">{{ action }}</h3>
+    </div>
+    
+    <!-- Shared form template for Evidence Form OR Lab Test Form depending on what's passed -->
+    <form method="post">
+        {% csrf_token %}
+        
+        {% if form.evidence_type %}
+            <!-- EVIDENCE FORM -->
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.case.label }}</label>
+                    {{ form.case }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.evidence_type.label }}</label>
+                    {{ form.evidence_type }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">{{ form.evidence_description.label }}</label>
+                {{ form.evidence_description }}
+            </div>
+            
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.collection_date.label }}</label>
+                    {{ form.collection_date }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.collected_by.label }}</label>
+                    {{ form.collected_by }}
+                </div>
+            </div>
+            
+            <hr style="border-color: var(--border-glass); margin: 2rem 0;">
+            <h4 style="margin-bottom: 1rem;">Storage & Analysis</h4>
+            
+            <div class="grid-3">
+                <div class="form-group">
+                    <label class="form-label">{{ form.storage_location.label }}</label>
+                    {{ form.storage_location }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.storage_temperature.label }}</label>
+                    {{ form.storage_temperature }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.analysis_type.label }}</label>
+                    {{ form.analysis_type }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">{{ form.remarks.label }}</label>
+                {{ form.remarks }}
+            </div>
+            
+        {% else %}
+            <!-- LAB TEST FORM -->
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.evidence.label }}</label>
+                    {{ form.evidence }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.technician.label }}</label>
+                    {{ form.technician }}
+                </div>
+            </div>
+            
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.test_type.label }}</label>
+                    {{ form.test_type }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.test_date.label }}</label>
+                    {{ form.test_date }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">{{ form.test_description.label }}</label>
+                {{ form.test_description }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.requested_by.label }}</label>
+                {{ form.requested_by }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.test_notes.label }}</label>
+                {{ form.test_notes }}
+            </div>
+        {% endif %}
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">Save Record</button>
+            <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

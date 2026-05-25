@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="glass-card">
+    <div class="card-header">
+        <h3 class="card-title">Evidence & Lab Tests</h3>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="glass-table">
+            <thead>
+                <tr>
+                    <th>Barcode</th>
+                    <th>Item No.</th>
+                    <th>Case No.</th>
+                    <th>Type</th>
+                    <th>Collection Date</th>
+                    <th>Analysis Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ev in page_obj %}
+                <tr>
+                    <td><span style="font-family: monospace; letter-spacing: 1px;">{{ ev.barcode_number }}</span></td>
+                    <td>{{ ev.evidence_number }}</td>
+                    <td><a href="{% url 'cases:detail' ev.case.case_id %}">{{ ev.case.case_number }}</a></td>
+                    <td>{{ ev.evidence_type }}</td>
+                    <td>{{ ev.collection_date|date:"Y-m-d H:i" }}</td>
+                    <td>
+                        {% if ev.analysis_status == 'Completed' %}
+                            <span class="badge badge-success">Completed</span>
+                        {% elif ev.analysis_status == 'Pending' %}
+                            <span class="badge badge-warning">Pending</span>
+                        {% else %}
+                            <span class="badge badge-info">{{ ev.analysis_status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'evidence:edit' ev.evidence_id %}" class="btn btn-sm btn-secondary">View / Edit</a>
+                        {% if user.is_administrator or user.is_lab_tech %}
+                        <a href="{% url 'evidence:labtest_create' ev.evidence_id %}" class="btn btn-sm btn-primary">+ Lab Test</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" style="text-align: center; padding: 2rem;">No evidence found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-sm btn-secondary">Prev</a>
+            {% endif %}
+            <span class="current" style="margin: 0 1rem;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-sm btn-secondary">Next</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

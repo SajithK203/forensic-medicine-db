@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-subtitle">
+    <a href="javascript:history.back()">&larr; Go Back</a>
+</div>
+
+<div class="glass-card" style="max-width: 900px; margin: 0 auto;">
+    <div class="card-header">
+        <h3 class="card-title">{{ action }}</h3>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.case.label }}</label>
+                {{ form.case }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.doctor.label }}</label>
+                {{ form.doctor }}
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div class="form-group">
+                <label class="form-label">{{ form.examination_date.label }}</label>
+                {{ form.examination_date }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.time_of_examination.label }}</label>
+                {{ form.time_of_examination }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.examination_type.label }}</label>
+                {{ form.examination_type }}
+            </div>
+        </div>
+        
+        <hr style="border-color: var(--border-glass); margin: 2rem 0;">
+        <h4 style="margin-bottom: 1rem;">Patient Condition</h4>
+        
+        <div class="grid-3">
+            <div class="form-group">
+                <label class="form-label">{{ form.consciousness.label }}</label>
+                {{ form.consciousness }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.general_condition.label }}</label>
+                {{ form.general_condition }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.nutritional_status.label }}</label>
+                {{ form.nutritional_status }}
+            </div>
+        </div>
+
+        <h4 style="margin-bottom: 1rem; margin-top: 1rem;">Findings</h4>
+        
+        <div class="form-group">
+            <label class="form-label">{{ form.injury_details.label }}</label>
+            {{ form.injury_details }}
+        </div>
+        
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.wound_description.label }}</label>
+                {{ form.wound_description }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.examination_findings.label }}</label>
+                {{ form.examination_findings }}
+            </div>
+        </div>
+        
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.causative_weapon.label }}</label>
+                {{ form.causative_weapon }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.photographs_taken.label }}</label>
+                {{ form.photographs_taken }}
+            </div>
+        </div>
+
+        <hr style="border-color: var(--border-glass); margin: 2rem 0;">
+        <h4 style="margin-bottom: 1rem;">Further Action</h4>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.investigation_type.label }}</label>
+                {{ form.investigation_type }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.referral_department.label }}</label>
+                {{ form.referral_department }}
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">{{ form.officer_notes.label }}</label>
+            {{ form.officer_notes }}
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">Save Examination Record</button>
+            <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

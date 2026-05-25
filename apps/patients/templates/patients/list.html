@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/patients/list.css' %}">{% endblock %}
+
+{% block content %}
+<div class="glass-card">
+    <div class="card-header">
+        <h3 class="card-title">Patient Directory</h3>
+        {% if not user.is_viewer %}
+        <a href="{% url 'patients:create' %}" class="btn btn-primary">+ New Patient</a>
+        {% endif %}
+    </div>
+
+    <form method="get" class="list-filters">
+        <div class="filter-input">
+            <input type="text" name="q" value="{{ q }}" class="form-input" placeholder="Search by name, NIC, or district...">
+        </div>
+        <div class="filter-select">
+            <select name="gender" class="form-select">
+                <option value="">All Genders</option>
+                <option value="Male" {% if gender == 'Male' %}selected{% endif %}>Male</option>
+                <option value="Female" {% if gender == 'Female' %}selected{% endif %}>Female</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-secondary">Filter</button>
+        <a href="{% url 'patients:list' %}" class="btn btn-secondary">Clear</a>
+    </form>
+
+    <div class="table-responsive">
+        <table class="glass-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>NIC / Passport</th>
+                    <th>Gender</th>
+                    <th>District</th>
+                    <th>Cases</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for patient in page_obj %}
+                <tr>
+                    <td>{{ patient.patient_id }}</td>
+                    <td><strong>{{ patient.full_name }}</strong></td>
+                    <td>{{ patient.nic_passport }}</td>
+                    <td>{{ patient.gender }}</td>
+                    <td>{{ patient.district }}</td>
+                    <td><span class="badge badge-secondary">{{ patient.total_cases }}</span></td>
+                    <td>
+                        <a href="{% url 'patients:detail' patient.patient_id %}" class="btn btn-sm btn-secondary">View</a>
+                        {% if not user.is_viewer %}
+                        <a href="{% url 'patients:edit' patient.patient_id %}" class="btn btn-sm btn-secondary">Edit</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" style="text-align: center; padding: 2rem;">No patients found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1&q={{ q }}&gender={{ gender }}" class="btn btn-sm btn-secondary">&laquo; First</a>
+                <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}&gender={{ gender }}" class="btn btn-sm btn-secondary">Prev</a>
+            {% endif %}
+            
+            <span class="current" style="margin: 0 1rem;">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&q={{ q }}&gender={{ gender }}" class="btn btn-sm btn-secondary">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&q={{ q }}&gender={{ gender }}" class="btn btn-sm btn-secondary">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-subtitle">
+    <a href="javascript:history.back()">&larr; Go Back</a>
+</div>
+
+<div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+    <div class="card-header">
+        <h3 class="card-title">{{ action }}</h3>
+    </div>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.full_name.label }}</label>
+                {{ form.full_name }}
+                {{ form.full_name.errors }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.nic_passport.label }}</label>
+                {{ form.nic_passport }}
+                {{ form.nic_passport.errors }}
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div class="form-group">
+                <label class="form-label">{{ form.date_of_birth.label }}</label>
+                {{ form.date_of_birth }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.age.label }}</label>
+                {{ form.age }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.gender.label }}</label>
+                {{ form.gender }}
+            </div>
+        </div>
+        
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.contact_no.label }}</label>
+                {{ form.contact_no }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.district.label }}</label>
+                {{ form.district }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ form.address.label }}</label>
+            {{ form.address }}
+        </div>
+
+        <hr style="border-color: var(--border-glass); margin: 2rem 0;">
+        
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.emergency_contact_name.label }}</label>
+                {{ form.emergency_contact_name }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.emergency_contact_no.label }}</label>
+                {{ form.emergency_contact_no }}
+            </div>
+        </div>
+        
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.civil_status.label }}</label>
+                {{ form.civil_status }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.occupation.label }}</label>
+                {{ form.occupation }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Photograph</label>
+            <input type="file" name="photograph" class="form-input" accept="image/*">
+            {% if patient and patient.photograph %}
+                <p style="font-size: 0.8rem; margin-top: 0.5rem;">Current: <a href="{{ patient.photograph.url }}" target="_blank">View Photo</a></p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ form.notes.label }}</label>
+            {{ form.notes }}
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">Save Patient Record</button>
+            <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

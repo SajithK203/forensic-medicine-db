@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | Forensic DB</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth/login.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        
+        <div class="login-card">
+            <div class="login-logo">
+                <h1>FMD SYSTEM</h1>
+                <p>Forensic Medicine Department Database</p>
+            </div>
+            
+            <form method="post" class="login-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.password.id_for_label }}">Password</label>
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="btn btn-primary btn-login">Sign In</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

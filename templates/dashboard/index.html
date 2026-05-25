@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard/index.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- KPI Cards -->
+<div class="kpi-grid">
+    <div class="glass-card kpi-card">
+        <div class="kpi-icon icon-blue">👥</div>
+        <div class="kpi-info">
+            <h3>Total Patients</h3>
+            <p>{{ total_patients }}</p>
+        </div>
+    </div>
+    <div class="glass-card kpi-card">
+        <div class="kpi-icon icon-purple">📁</div>
+        <div class="kpi-info">
+            <h3>Active Cases</h3>
+            <p>{{ active_cases }}</p>
+        </div>
+    </div>
+    <div class="glass-card kpi-card">
+        <div class="kpi-icon icon-orange">🧪</div>
+        <div class="kpi-info">
+            <h3>Pending Evidence</h3>
+            <p>{{ pending_evidence }}</p>
+        </div>
+    </div>
+    <div class="glass-card kpi-card">
+        <div class="kpi-icon icon-green">⚖️</div>
+        <div class="kpi-info">
+            <h3>Pending Reports</h3>
+            <p>{{ pending_reports }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="dashboard-grid">
+    <div class="glass-card">
+        <div class="card-header">
+            <h3 class="card-title">📊 Case Trend (Last 12 Months)</h3>
+        </div>
+        <div class="chart-container">
+            <canvas id="trendChart"></canvas>
+        </div>
+    </div>
+    <div class="glass-card">
+        <div class="card-header">
+            <h3 class="card-title">🥧 Case Type Distribution</h3>
+        </div>
+        <div class="chart-container">
+            <canvas id="typeChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Cases + Activity -->
+<div class="dashboard-grid">
+    <div class="glass-card">
+        <div class="card-header">
+            <h3 class="card-title">🗂 Recent Cases</h3>
+            <a href="{% url 'cases:list' %}" class="btn btn-secondary btn-sm">View All →</a>
+        </div>
+        <div class="table-responsive">
+            <table class="glass-table">
+                <thead>
+                    <tr>
+                        <th>Case No.</th>
+                        <th>Patient</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for case in recent_cases %}
+                    <tr>
+                        <td><a href="{% url 'cases:detail' case.pk %}">{{ case.case_number }}</a></td>
+                        <td>{{ case.patient.full_name }}</td>
+                        <td>{{ case.case_type }}</td>
+                        <td><span class="badge {{ case.status_badge }}">{{ case.case_status }}</span></td>
+                        <td>{{ case.created_at|date:"Y-m-d" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-muted);">No cases yet. <a href="{% url 'cases:create' %}">Open first case →</a></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="glass-card">
+        <div class="card-header">
+            <h3 class="card-title">🕐 Recent Activity</h3>
+        </div>
+        <div class="activity-list">
+            {% for log in recent_logs %}
+            <div class="activity-item">
+                <div class="activity-time">{{ log.logged_at|date:"M d, Y H:i" }}</div>
+                <div class="activity-details">
+                    <span class="activity-user">{{ log.username }}</span>
+                    — {{ log.action_type }}
+                    {% if log.model_name %} {{ log.model_name }}{% endif %}
+                    {% if log.record_id and log.record_id != 'None' %} #{{ log.record_id }}{% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <div class="activity-item" style="color:var(--text-muted);">No activity yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+{{ months_labels|json_script:"monthsLabels" }}
+{{ months_clinical|json_script:"monthsClinical" }}
+{{ months_autopsy|json_script:"monthsAutopsy" }}
+{{ type_data|json_script:"typeData" }}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    Chart.defaults.color = '#94a3b8';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.font.size   = 12;
+
+    const gridColor = 'rgba(255,255,255,0.05)';
+
+    // Trend line chart
+    const mL = JSON.parse(document.getElementById('monthsLabels').textContent);
+    const mC = JSON.parse(document.getElementById('monthsClinical').textContent);
+    const mA = JSON.parse(document.getElementById('monthsAutopsy').textContent);
+
+    new Chart(document.getElementById('trendChart'), {
+        type: 'line',
+        data: {
+            labels: mL,
+            datasets: [
+                { label: 'Clinical Forensic', data: mC, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', borderWidth: 2, tension: 0.4, fill: true, pointRadius: 3 },
+                { label: 'Autopsy',          data: mA, borderColor: '#06b6d4', backgroundColor: 'rgba(6,182,212,0.1)',   borderWidth: 2, tension: 0.4, fill: true, pointRadius: 3 }
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'top' } },
+            scales: { y: { beginAtZero: true, grid: { color: gridColor } }, x: { grid: { display: false } } }
+        }
+    });
+
+    // Doughnut chart
+    const tD = JSON.parse(document.getElementById('typeData').textContent);
+    const tL = tD.map(d => d.case_type);
+    const tC = tD.map(d => d.count);
+
+    new Chart(document.getElementById('typeChart'), {
+        type: 'doughnut',
+        data: {
+            labels: tL.length ? tL : ['No Data'],
+            datasets: [{ data: tC.length ? tC : [1], backgroundColor: ['#3b82f6','#8b5cf6','#10b981'], borderWidth: 0 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '68%',
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+});
+</script>
+{% endblock %}

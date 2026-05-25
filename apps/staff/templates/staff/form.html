@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-subtitle">
+    <a href="{% url 'staff:list' %}">&larr; Back to Directory</a>
+</div>
+
+<div class="glass-card" style="max-width: 700px; margin: 0 auto;">
+    <div class="card-header">
+        <h3 class="card-title">{{ action }}</h3>
+    </div>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        {% if form.staff_type %}
+            <!-- STAFF FORM -->
+            <div class="form-group">
+                <label class="form-label">{{ form.full_name.label }}</label>
+                {{ form.full_name }}
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.staff_type.label }}</label>
+                    {{ form.staff_type }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.department.label }}</label>
+                    {{ form.department }}
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.designation.label }}</label>
+                    {{ form.designation }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.contact_no.label }}</label>
+                    {{ form.contact_no }}
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.email.label }}</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.join_date.label }}</label>
+                    {{ form.join_date }}
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                    {{ form.is_active }} {{ form.is_active.label }}
+                </label>
+            </div>
+        {% else %}
+            <!-- DOCTOR FORM -->
+            <div class="form-group">
+                <label class="form-label">Link to Staff Member</label>
+                {{ form.staff }}
+                <small style="color: var(--text-muted); display: block; margin-top: 0.25rem;">Must be an active staff member of type 'Doctor'</small>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">{{ form.full_name.label }}</label>
+                {{ form.full_name }}
+            </div>
+            
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.nmc_number.label }}</label>
+                    {{ form.nmc_number }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.license_number.label }}</label>
+                    {{ form.license_number }}
+                </div>
+            </div>
+            
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.qualification.label }}</label>
+                    {{ form.qualification }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.specialization.label }}</label>
+                    {{ form.specialization }}
+                </div>
+            </div>
+            
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.jmo_type.label }}</label>
+                    {{ form.jmo_type }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.office_contact_no.label }}</label>
+                    {{ form.office_contact_no }}
+                </div>
+            </div>
+            
+            <div class="form-group" style="margin-top: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                    {{ form.is_active }} {{ form.is_active.label }}
+                </label>
+            </div>
+        {% endif %}
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">Save Record</button>
+            <a href="{% url 'staff:list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

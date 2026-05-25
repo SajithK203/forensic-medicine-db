@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/cases/detail.css' %}">{% endblock %}
+
+{% block content %}
+<div class="page-subtitle">
+    <a href="{% url 'cases:list' %}">&larr; Back to Cases</a>
+</div>
+
+<div class="glass-card section-card">
+    <div class="case-header">
+        <div>
+            <h2 class="case-title">Case {{ case.case_number }}</h2>
+            <div class="case-meta">
+                <span><i class="icon">👤</i> Patient: <a href="{% url 'patients:detail' case.patient.patient_id %}">{{ case.patient.full_name }}</a></span>
+                <span><i class="icon">🩺</i> Doctor: Dr. {{ case.doctor.full_name }}</span>
+            </div>
+            <div style="margin-top: 1rem;">
+                <span class="badge {{ case.status_badge }}">{{ case.case_status }}</span>
+                <span class="badge {{ case.priority_badge }}">{{ case.priority }} Priority</span>
+                <span class="badge badge-secondary">{{ case.case_type }}</span>
+            </div>
+        </div>
+        <div class="case-actions">
+            {% if not user.is_viewer %}
+                {% if user.is_administrator or user.is_doctor %}
+                <a href="{% url 'cases:update_status' case.case_id %}" class="btn btn-secondary">Update Status</a>
+                {% endif %}
+                <a href="{% url 'cases:edit' case.case_id %}" class="btn btn-primary">Edit Case</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div>
+            <h4 style="margin-bottom: 1rem; color: var(--text-muted);">Incident Details</h4>
+            <div class="info-list" style="margin-top: 0;">
+                <div class="info-item" style="border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+                    <div class="info-label">Date & Time</div>
+                    <div class="info-value">{{ case.incident_date|date:"Y-m-d H:i" }}</div>
+                </div>
+                <div class="info-item" style="border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+                    <div class="info-label">Location</div>
+                    <div class="info-value">{{ case.incident_location|default:"N/A" }}</div>
+                </div>
+                <div class="info-item" style="border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+                    <div class="info-label">Incident Type</div>
+                    <div class="info-value">{{ case.incident_type|default:"N/A" }}</div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h4 style="margin-bottom: 1rem; color: var(--text-muted);">Legal / Police Details</h4>
+            <div class="info-list" style="margin-top: 0;">
+                <div class="info-item" style="border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+                    <div class="info-label">Police Report No.</div>
+                    <div class="info-value">{{ case.police_report_no|default:"N/A" }}</div>
+                </div>
+                <div class="info-item" style="border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+                    <div class="info-label">Court Case No.</div>
+                    <div class="info-value">{{ case.court_case_no|default:"N/A" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if case.case_notes %}
+    <div style="margin-top: 1.5rem;">
+        <h4 style="margin-bottom: 0.5rem; color: var(--text-muted);">Case Notes</h4>
+        <p>{{ case.case_notes|linebreaksbr }}</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Tabs could be implemented here, but we'll stack them for simplicity -->
+<div class="grid-2">
+    <!-- Clinical Examinations -->
+    {% if case.case_type == 'Clinical Forensic' or case.case_type == 'Clinical & Autopsy' %}
+    <div class="glass-card section-card">
+        <div class="card-header">
+            <h3 class="card-title">Clinical Examinations ({{ examinations.count }})</h3>
+            {% if not user.is_viewer %}
+            <a href="{% url 'clinical:create' %}?case={{ case.case_id }}" class="btn btn-sm btn-secondary">+ Add Exam</a>
+            {% endif %}
+        </div>
+        <div class="timeline">
+            {% for exam in examinations %}
+            <div class="timeline-item">
+                <div class="timeline-date">{{ exam.examination_date|date:"M d, Y - H:i" }}</div>
+                <div class="timeline-content">
+                    <div style="font-weight: 500; margin-bottom: 0.5rem;">{{ exam.examination_type|default:"General Examination" }}</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">By Dr. {{ exam.doctor.full_name }}</div>
+                    <div style="margin-top: 0.5rem;">
+                        <a href="{% url 'clinical:edit' exam.exam_id %}" class="btn btn-sm btn-secondary">View / Edit</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No clinical examinations recorded.</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Postmortem -->
+    {% if case.case_type == 'Autopsy' or case.case_type == 'Clinical & Autopsy' %}
+    <div class="glass-card section-card">
+        <div class="card-header">
+            <h3 class="card-title">Postmortem Record</h3>
+        </div>
+        {% if postmortem %}
+            <div class="info-list" style="margin-top: 0;">
+                <div class="info-item" style="border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+                    <div class="info-label">Autopsy Date</div>
+                    <div class="info-value">{{ postmortem.autopsy_date|date:"Y-m-d H:i" }}</div>
+                </div>
+                <div class="info-item" style="border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+                    <div class="info-label">Death Type</div>
+                    <div class="info-value"><span class="badge {{ postmortem.death_type_badge }}">{{ postmortem.death_type }}</span></div>
+                </div>
+                <div class="info-item" style="border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+                    <div class="info-label">Immediate Cause</div>
+                    <div class="info-value">{{ postmortem.immediate_cause|default:"Pending" }}</div>
+                </div>
+            </div>
+            <div style="margin-top: 1rem;">
+                <a href="{% url 'postmortem:edit' postmortem.postmortem_id %}" class="btn btn-sm btn-primary">View Full Report</a>
+            </div>
+        {% else %}
+            <p style="margin-bottom: 1rem;">No postmortem recorded yet.</p>
+            {% if not user.is_viewer %}
+            <a href="{% url 'postmortem:create' %}?case={{ case.case_id }}" class="btn btn-sm btn-secondary">+ Record Postmortem</a>
+            {% endif %}
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+<!-- Evidence & Reports -->
+<div class="grid-2">
+    <div class="glass-card section-card">
+        <div class="card-header">
+            <h3 class="card-title">Evidence Collected ({{ evidence_items.count }})</h3>
+            {% if not user.is_viewer %}
+            <a href="{% url 'evidence:create' %}?case={{ case.case_id }}" class="btn btn-sm btn-secondary">+ Add Evidence</a>
+            {% endif %}
+        </div>
+        <div class="table-responsive">
+            <table class="glass-table">
+                <thead>
+                    <tr>
+                        <th>Item No.</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ev in evidence_items %}
+                    <tr>
+                        <td>{{ ev.evidence_number }}</td>
+                        <td>{{ ev.evidence_type }}</td>
+                        <td>
+                            {% if ev.analysis_status == 'Completed' %}
+                                <span class="badge badge-success">Completed</span>
+                            {% elif ev.analysis_status == 'Pending' %}
+                                <span class="badge badge-warning">Pending</span>
+                            {% else %}
+                                <span class="badge badge-info">{{ ev.analysis_status }}</span>
+                            {% endif %}
+                        </td>
+                        <td><a href="{% url 'evidence:edit' ev.evidence_id %}" class="btn btn-sm btn-secondary">View</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4">No evidence recorded.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="glass-card section-card">
+        <div class="card-header">
+            <h3 class="card-title">Court Reports ({{ court_reports.count }})</h3>
+            {% if user.is_administrator or user.is_doctor %}
+            <a href="{% url 'reports:create' %}?case={{ case.case_id }}" class="btn btn-sm btn-secondary">+ Draft Report</a>
+            {% endif %}
+        </div>
+        <div class="table-responsive">
+            <table class="glass-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rpt in court_reports %}
+                    <tr>
+                        <td>{{ rpt.report_type }}</td>
+                        <td><span class="badge {{ rpt.status_badge }}">{{ rpt.report_status }}</span></td>
+                        <td>{{ rpt.generated_at|date:"Y-m-d" }}</td>
+                        <td><a href="{% url 'reports:edit' rpt.report_id %}" class="btn btn-sm btn-secondary">View</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4">No reports generated.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

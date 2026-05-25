@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-subtitle">
+    <a href="javascript:history.back()">&larr; Go Back</a>
+</div>
+
+<div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+    <div class="card-header">
+        <h3 class="card-title">{{ action }}</h3>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        {% if form.case_status %}
+            <!-- This is the Status Update Form -->
+            <div class="form-group">
+                <label class="form-label">{{ form.case_status.label }}</label>
+                {{ form.case_status }}
+            </div>
+        {% else %}
+            <!-- This is the Full Case Form -->
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.patient.label }}</label>
+                    {{ form.patient }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.doctor.label }}</label>
+                    {{ form.doctor }}
+                </div>
+            </div>
+
+            <div class="grid-3">
+                <div class="form-group">
+                    <label class="form-label">{{ form.case_type.label }}</label>
+                    {{ form.case_type }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.priority.label }}</label>
+                    {{ form.priority }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.incident_date.label }}</label>
+                    {{ form.incident_date }}
+                </div>
+            </div>
+            
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.incident_location.label }}</label>
+                    {{ form.incident_location }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.incident_type.label }}</label>
+                    {{ form.incident_type }}
+                </div>
+            </div>
+
+            <hr style="border-color: var(--border-glass); margin: 2rem 0;">
+            
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">{{ form.police_report_no.label }}</label>
+                    {{ form.police_report_no }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ form.court_case_no.label }}</label>
+                    {{ form.court_case_no }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">{{ form.case_notes.label }}</label>
+                {{ form.case_notes }}
+            </div>
+        {% endif %}
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

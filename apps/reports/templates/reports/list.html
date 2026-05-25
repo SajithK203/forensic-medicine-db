@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/patients/list.css' %}">{% endblock %}
+
+{% block content %}
+<div class="glass-card">
+    <div class="card-header">
+        <h3 class="card-title">Court Reports</h3>
+        <!-- Note: Reports are generated directly from Case pages -->
+    </div>
+
+    <form method="get" class="list-filters">
+        <div class="filter-select">
+            <select name="status" class="form-select">
+                <option value="">All Statuses</option>
+                <option value="Draft" {% if status == 'Draft' %}selected{% endif %}>Draft</option>
+                <option value="Generated" {% if status == 'Generated' %}selected{% endif %}>Generated</option>
+                <option value="Reviewed" {% if status == 'Reviewed' %}selected{% endif %}>Reviewed</option>
+                <option value="Submitted" {% if status == 'Submitted' %}selected{% endif %}>Submitted</option>
+                <option value="Received" {% if status == 'Received' %}selected{% endif %}>Received</option>
+            </select>
+        </div>
+        <div class="filter-select">
+            <select name="report_type" class="form-select">
+                <option value="">All Types</option>
+                <option value="MLR" {% if report_type == 'MLR' %}selected{% endif %}>MLR</option>
+                <option value="PMR" {% if report_type == 'PMR' %}selected{% endif %}>PMR</option>
+                <option value="Combined" {% if report_type == 'Combined' %}selected{% endif %}>Combined</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-secondary">Filter</button>
+        <a href="{% url 'reports:list' %}" class="btn btn-secondary">Clear</a>
+    </form>
+
+    <div class="table-responsive">
+        <table class="glass-table">
+            <thead>
+                <tr>
+                    <th>Report ID</th>
+                    <th>Case No.</th>
+                    <th>Type</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Generated Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rpt in page_obj %}
+                <tr>
+                    <td><strong>{{ rpt.report_id }}</strong></td>
+                    <td><a href="{% url 'cases:detail' rpt.case.case_id %}">{{ rpt.case.case_number }}</a></td>
+                    <td>{{ rpt.report_type }}</td>
+                    <td>{{ rpt.report_title|truncatechars:30 }}</td>
+                    <td><span class="badge {{ rpt.status_badge }}">{{ rpt.report_status }}</span></td>
+                    <td>{{ rpt.generated_at|date:"Y-m-d H:i" }}</td>
+                    <td style="display: flex; gap: 0.5rem;">
+                        <a href="{% url 'reports:edit' rpt.report_id %}" class="btn btn-sm btn-secondary">View / Edit</a>
+                        {% if rpt.report_status == 'Generated' or rpt.report_status == 'Reviewed' %}
+                            <form action="{% url 'reports:submit' rpt.report_id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Confirm submission to court?')">Submit</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" style="text-align: center; padding: 2rem;">No court reports found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1&status={{ status }}&report_type={{ report_type }}" class="btn btn-sm btn-secondary">&laquo; First</a>
+                <a href="?page={{ page_obj.previous_page_number }}&status={{ status }}&report_type={{ report_type }}" class="btn btn-sm btn-secondary">Prev</a>
+            {% endif %}
+            
+            <span class="current" style="margin: 0 1rem;">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&status={{ status }}&report_type={{ report_type }}" class="btn btn-sm btn-secondary">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&status={{ status }}&report_type={{ report_type }}" class="btn btn-sm btn-secondary">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+# Auto-detect text files and handle line endings automatically
+* text=auto
+
+# Python
+*.py text eol=lf
+
+# Templates & CSS & JS
+*.html text eol=lf
+*.css  text eol=lf
+*.js   text eol=lf
+
+# SQL
+*.sql text eol=lf
+
+# Config
+*.txt  text eol=lf
+*.md   text eol=lf
+*.env* text eol=lf

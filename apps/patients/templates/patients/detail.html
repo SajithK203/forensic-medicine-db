@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/patients/detail.css' %}">{% endblock %}
+
+{% block content %}
+<div class="page-subtitle">
+    <a href="{% url 'patients:list' %}">&larr; Back to Directory</a>
+</div>
+
+<div class="detail-grid">
+    <!-- Patient Profile -->
+    <div class="glass-card profile-section">
+        {% if patient.photograph %}
+        <img src="{{ patient.photograph.url }}" alt="{{ patient.full_name }}" class="profile-photo">
+        {% else %}
+        <div class="profile-photo" style="display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--text-muted);">
+            👤
+        </div>
+        {% endif %}
+        
+        <h2>{{ patient.full_name }}</h2>
+        <div style="margin-top: 0.5rem;">
+            <span class="badge badge-primary">{{ patient.patient_id }}</span>
+        </div>
+        
+        {% if not user.is_viewer %}
+        <div style="margin-top: 1.5rem;">
+            <a href="{% url 'patients:edit' patient.patient_id %}" class="btn btn-secondary w-full">Edit Profile</a>
+        </div>
+        {% endif %}
+
+        <div class="info-list">
+            <div class="info-item">
+                <div class="info-label">NIC / Passport</div>
+                <div class="info-value">{{ patient.nic_passport }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Gender & Age</div>
+                <div class="info-value">{{ patient.gender }}, {% if patient.age %}{{ patient.age }} yrs{% else %}Unknown{% endif %}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Contact No.</div>
+                <div class="info-value">{{ patient.contact_no|default:"N/A" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">District</div>
+                <div class="info-value">{{ patient.district|default:"N/A" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Address</div>
+                <div class="info-value">{{ patient.address|default:"N/A" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Emergency Contact</div>
+                <div class="info-value">{{ patient.emergency_contact_name|default:"N/A" }} <br> {{ patient.emergency_contact_no|default:"" }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Cases -->
+    <div class="glass-card">
+        <div class="card-header">
+            <h3 class="card-title">Forensic Cases ({{ cases.count }})</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="glass-table">
+                <thead>
+                    <tr>
+                        <th>Case Number</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for case in cases %}
+                    <tr>
+                        <td><strong>{{ case.case_number }}</strong></td>
+                        <td>{{ case.case_type }}</td>
+                        <td>{{ case.incident_date|date:"Y-m-d" }}</td>
+                        <td><span class="badge {{ case.status_badge }}">{{ case.case_status }}</span></td>
+                        <td>
+                            <a href="{% url 'cases:detail' case.case_id %}" class="btn btn-sm btn-secondary">View Case</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" style="text-align: center; padding: 2rem;">No cases recorded for this patient.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

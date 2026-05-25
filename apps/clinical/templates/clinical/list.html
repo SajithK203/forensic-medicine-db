@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="glass-card">
+    <div class="card-header">
+        <h3 class="card-title">Clinical Examinations</h3>
+        <!-- Creation is typically done from the Case detail page -->
+    </div>
+    
+    <div class="table-responsive">
+        <table class="glass-table">
+            <thead>
+                <tr>
+                    <th>Exam ID</th>
+                    <th>Case No.</th>
+                    <th>Patient</th>
+                    <th>Date & Time</th>
+                    <th>Exam Type</th>
+                    <th>Doctor</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exam in page_obj %}
+                <tr>
+                    <td><strong>{{ exam.exam_id }}</strong></td>
+                    <td><a href="{% url 'cases:detail' exam.case.case_id %}">{{ exam.case.case_number }}</a></td>
+                    <td>{{ exam.case.patient.full_name }}</td>
+                    <td>{{ exam.examination_date|date:"Y-m-d H:i" }}</td>
+                    <td>{{ exam.examination_type|default:"General" }}</td>
+                    <td>Dr. {{ exam.doctor.full_name }}</td>
+                    <td>
+                        <a href="{% url 'clinical:edit' exam.exam_id %}" class="btn btn-sm btn-secondary">View / Edit</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" style="text-align: center; padding: 2rem;">No clinical examinations found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-sm btn-secondary">Prev</a>
+            {% endif %}
+            <span class="current" style="margin: 0 1rem;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-sm btn-secondary">Next</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}
