@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/patients/detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-subtitle">
+    <a href="{% url 'evidence:list' %}">&larr; Back to Evidence List</a>
+    &nbsp;|&nbsp;
+    <a href="{% url 'cases:detail' ev.case.case_id %}">View Case {{ ev.case.case_number }}</a>
+</div>
+
+<!-- Evidence Header Card -->
+<div class="glass-card" style="margin-bottom: 1.5rem;">
+    <div class="card-header">
+        <div>
+            <h2 style="font-size:1.4rem; font-weight:700;">{{ ev.evidence_number }}</h2>
+            <div style="margin-top:0.5rem;">
+                {% if ev.analysis_status == 'Completed' %}
+                    <span class="badge badge-success">{{ ev.analysis_status }}</span>
+                {% elif ev.analysis_status == 'Pending' %}
+                    <span class="badge badge-warning">{{ ev.analysis_status }}</span>
+                {% elif ev.analysis_status == 'InProgress' %}
+                    <span class="badge badge-info">In Progress</span>
+                {% else %}
+                    <span class="badge badge-secondary">{{ ev.analysis_status }}</span>
+                {% endif %}
+                <span class="badge badge-dark">{{ ev.evidence_type }}</span>
+                <span class="badge badge-secondary" style="font-family:monospace;">{{ ev.barcode_number }}</span>
+            </div>
+        </div>
+        <div style="display:flex; gap:0.75rem;">
+            {% if not user.is_viewer %}
+            <a href="{% url 'evidence:edit' ev.evidence_id %}" class="btn btn-secondary">Edit Evidence</a>
+            {% endif %}
+            {% if user.is_administrator or user.is_lab_tech %}
+            <a href="{% url 'evidence:labtest_create' ev.evidence_id %}" class="btn btn-primary">+ Add Lab Test</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div>
+            <div class="info-item" style="border-bottom:1px solid var(--border-glass); padding-bottom:0.75rem; margin-bottom:0.75rem;">
+                <div class="info-label">Case</div>
+                <div class="info-value"><a href="{% url 'cases:detail' ev.case.case_id %}">{{ ev.case.case_number }}</a> — {{ ev.case.incident_type }}</div>
+            </div>
+            <div class="info-item" style="border-bottom:1px solid var(--border-glass); padding-bottom:0.75rem; margin-bottom:0.75rem;">
+                <div class="info-label">Patient</div>
+                <div class="info-value">{{ ev.case.patient.full_name }}</div>
+            </div>
+            <div class="info-item" style="border-bottom:1px solid var(--border-glass); padding-bottom:0.75rem; margin-bottom:0.75rem;">
+                <div class="info-label">Collected By</div>
+                <div class="info-value">{{ ev.collected_by|default:"N/A" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Collection Date</div>
+                <div class="info-value">{{ ev.collection_date|date:"Y-m-d H:i" }}</div>
+            </div>
+        </div>
+        <div>
+            <div class="info-item" style="border-bottom:1px solid var(--border-glass); padding-bottom:0.75rem; margin-bottom:0.75rem;">
+                <div class="info-label">Storage Location</div>
+                <div class="info-value">{{ ev.storage_location|default:"N/A" }}</div>
+            </div>
+            <div class="info-item" style="border-bottom:1px solid var(--border-glass); padding-bottom:0.75rem; margin-bottom:0.75rem;">
+                <div class="info-label">Analysis Type</div>
+                <div class="info-value">{{ ev.analysis_type|default:"N/A" }}</div>
+            </div>
+            <div class="info-item" style="border-bottom:1px solid var(--border-glass); padding-bottom:0.75rem; margin-bottom:0.75rem;">
+                <div class="info-label">Disposal Status</div>
+                <div class="info-value">{{ ev.disposal_status }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Description</div>
+                <div class="info-value">{{ ev.evidence_description|default:"—" }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lab Tests Card -->
+<div class="glass-card">
+    <div class="card-header">
+        <h3 class="card-title">Laboratory Tests ({{ lab_tests.count }})</h3>
+        {% if user.is_administrator or user.is_lab_tech %}
+        <a href="{% url 'evidence:labtest_create' ev.evidence_id %}" class="btn btn-primary btn-sm">+ Add Lab Test</a>
+        {% endif %}
+    </div>
+
+    {% if lab_tests %}
+    <div class="table-responsive">
+        <table class="glass-table">
+            <thead>
+                <tr>
+                    <th>Test ID</th>
+                    <th>Test Type</th>
+                    <th>Test Date</th>
+                    <th>Technician</th>
+                    <th>Requested By</th>
+                    <th>Status</th>
+                    <th>Result</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lt in lab_tests %}
+                <tr>
+                    <td><strong>{{ lt.test_id }}</strong></td>
+                    <td>{{ lt.test_type }}</td>
+                    <td>{{ lt.test_date|date:"Y-m-d" }}</td>
+                    <td>{{ lt.technician.full_name|default:"—" }}</td>
+                    <td>{{ lt.requested_by|default:"—" }}</td>
+                    <td>
+                        {% if lt.test_status == 'Completed' %}
+                            <span class="badge badge-success">Completed</span>
+                        {% elif lt.test_status == 'Pending' %}
+                            <span class="badge badge-warning">Pending</span>
+                        {% elif lt.test_status == 'InProgress' %}
+                            <span class="badge badge-info">In Progress</span>
+                        {% elif lt.test_status == 'Failed' %}
+                            <span class="badge badge-danger">Failed</span>
+                        {% else %}
+                            <span class="badge badge-secondary">{{ lt.test_status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if lt.test_result %}
+                            <span style="font-size:0.85rem;">{{ lt.test_result|truncatechars:40 }}</span>
+                        {% else %}
+                            <span style="color:var(--text-muted); font-size:0.85rem;">Pending result</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user.is_administrator or user.is_lab_tech %}
+                            {% if lt.test_status == 'Pending' %}
+                            <a href="{% url 'evidence:labtest_results' lt.test_id %}" class="btn btn-sm btn-primary">Enter Results</a>
+                            {% else %}
+                            <a href="{% url 'evidence:labtest_results' lt.test_id %}" class="btn btn-sm btn-secondary">Update Results</a>
+                            {% endif %}
+                            <a href="{% url 'evidence:labtest_edit' lt.test_id %}" class="btn btn-sm btn-secondary" style="margin-left:0.25rem;">Edit</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div style="text-align:center; padding:3rem; color:var(--text-muted);">
+        <p style="font-size:1.1rem; margin-bottom:1rem;">No lab tests recorded yet.</p>
+        {% if user.is_administrator or user.is_lab_tech %}
+        <a href="{% url 'evidence:labtest_create' ev.evidence_id %}" class="btn btn-primary">+ Add First Lab Test</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

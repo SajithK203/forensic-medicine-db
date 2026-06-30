@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-subtitle">
+    {% if evidence %}
+    <a href="{% url 'evidence:detail' evidence.evidence_id %}">&larr; Back to {{ evidence.evidence_number }}</a>
+    {% elif lt %}
+    <a href="{% url 'evidence:detail' lt.evidence.evidence_id %}">&larr; Back to {{ lt.evidence.evidence_number }}</a>
+    {% endif %}
+</div>
+
+<div class="glass-card" style="max-width:820px; margin: 0 auto;">
+    <div class="card-header">
+        <h3 class="card-title">{{ action }}</h3>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+            {% if evidence %}
+            <span class="badge badge-primary">{{ evidence.evidence_number }}</span>
+            <span class="badge badge-secondary">{{ evidence.evidence_type }}</span>
+            {% elif lt %}
+            <span class="badge badge-primary">{{ lt.test_id }}</span>
+            <span class="badge badge-secondary">{{ lt.test_type }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if form_type == 'results' %}
+    <!-- ═══ RESULT ENTRY INFO BOX ════════════════════════════════════ -->
+    <div style="background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.25); border-radius:10px; padding:1rem 1.25rem; margin-bottom:1.5rem;">
+        <div style="font-weight:600; color:#93c5fd; margin-bottom:0.5rem;">📋 Test Information (Read Only)</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem 2rem; font-size:0.88rem;">
+            <div><span style="color:var(--text-muted);">Test Type:</span> <strong>{{ lt.test_type }}</strong></div>
+            <div><span style="color:var(--text-muted);">Requested By:</span> <strong>{{ lt.requested_by|default:"—" }}</strong></div>
+            <div><span style="color:var(--text-muted);">Test Date:</span> <strong>{{ lt.test_date|date:"Y-m-d H:i" }}</strong></div>
+            <div><span style="color:var(--text-muted);">Technician:</span> <strong>{{ lt.technician.full_name|default:"—" }}</strong></div>
+            {% if lt.test_description %}
+            <div style="grid-column:1/-1;"><span style="color:var(--text-muted);">Description:</span> {{ lt.test_description }}</div>
+            {% endif %}
+            {% if lt.test_notes %}
+            <div style="grid-column:1/-1;"><span style="color:var(--text-muted);">Notes:</span> {{ lt.test_notes }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <h4 style="font-size:1rem; font-weight:600; color:var(--text-muted); margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid var(--border-glass);">Enter Results</h4>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">Test Status <span style="color:#ef4444;">*</span></label>
+                {{ form.test_status }}
+                <small style="color:var(--text-muted); font-size:0.78rem; margin-top:0.25rem; display:block;">
+                    Set to <strong>Completed</strong> when analysis is done. Evidence status updates automatically.
+                </small>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Completion Date</label>
+                {{ form.completion_date }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Test Result <span style="color:#ef4444;">*</span></label>
+            {{ form.test_result }}
+            <small style="color:var(--text-muted); font-size:0.78rem; margin-top:0.25rem; display:block;">
+                Enter the raw findings e.g. "Blood Alcohol: 0.12 g/L", "DNA: Matches reference sample FMD001"
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Result Interpretation</label>
+            {{ form.result_interpretation }}
+            <small style="color:var(--text-muted); font-size:0.78rem; margin-top:0.25rem; display:block;">
+                Explain what the result means in forensic context. This appears in court reports.
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Lab Reference Number</label>
+            {{ form.reference_number }}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Additional Notes</label>
+            {{ form.test_notes }}
+        </div>
+
+        <div style="margin-top:2rem; display:flex; gap:1rem; align-items:center;">
+            <button type="submit" class="btn btn-primary">Save Results</button>
+            <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+            <span style="font-size:0.82rem; color:var(--text-muted); margin-left:auto;">
+                Evidence status updates automatically based on all test statuses.
+            </span>
+        </div>
+    </form>
+
+    {% else %}
+    <!-- ═══ CREATE / EDIT LAB TEST FORM ══════════════════════════════ -->
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">Evidence Item</label>
+                {{ form.evidence }}
+                {{ form.evidence.errors }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">Test Type <span style="color:#ef4444;">*</span></label>
+                {{ form.test_type }}
+                {{ form.test_type.errors }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Test Description</label>
+            {{ form.test_description }}
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">Test / Send Date <span style="color:#ef4444;">*</span></label>
+                {{ form.test_date }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">Assigned Technician</label>
+                {{ form.technician }}
+                <small style="color:var(--text-muted); font-size:0.78rem; margin-top:0.25rem; display:block;">
+                    Only Lab staff are shown here.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Requested By (Doctor / JMO)</label>
+            {{ form.requested_by }}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Special Instructions for Lab</label>
+            {{ form.test_notes }}
+        </div>
+
+        <div style="margin-top:2rem; display:flex; gap:1rem;">
+            <button type="submit" class="btn btn-primary">{{ action }}</button>
+            <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
