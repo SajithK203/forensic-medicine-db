@@ -58,6 +58,15 @@ class Doctor(models.Model):
         (JMO_SENIOR,     'Senior JMO'),
         (JMO_JUNIOR,     'Junior JMO'),
     ]
+    department_choices=[
+        ('Forensic Medicine','Forensic Medicine'),
+        ('Castle Street Hospital for Children','Castle Street Hospital for Children'),
+        ('National Hospital of Sri Lanka','National Hospital of Sri Lanka'),
+        ('Eye and ENT Hospital, Ragama','Eye and ENT Hospital, Ragama'),
+        ('Lady Ridgeway Hospital for Children','Lady Ridgeway Hospital for Children'),
+        ('District General Hospital - Gampaha','District General Hospital - Gampaha'),
+        ('District General Hospital - Kalutara','District General Hospital - Kalutara'),
+    ]
 
     doctor_id         = models.CharField(max_length=15, primary_key=True, editable=False)
     staff             = models.OneToOneField(Staff, on_delete=models.SET_NULL, null=True, blank=True,
@@ -68,7 +77,7 @@ class Doctor(models.Model):
     specialization    = models.CharField(max_length=100, blank=True)
     jmo_type          = models.CharField(max_length=20, choices=JMO_CHOICES)
     license_number    = models.CharField(max_length=50, unique=True, null=True, blank=True)
-    department        = models.CharField(max_length=100, default='Forensic Medicine')
+    department        = models.CharField(max_length=100, choices=department_choices)
     office_contact_no = models.CharField(max_length=15, blank=True)
     signature_path    = models.ImageField(upload_to='doctors/signatures/', null=True, blank=True)
     is_active         = models.BooleanField(default=True)
