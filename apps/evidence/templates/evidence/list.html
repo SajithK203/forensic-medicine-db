@@ -1,12 +1,145 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/patients/list.css' %}">
+<style>
+/* ── Barcode Scanner Panel ─────────────────────────────────── */
+.scan-panel {
+    background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.10));
+    border: 1.5px solid rgba(59,130,246,0.35);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+.scan-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+.scan-label {
+    flex: 0 0 auto;
+}
+.scan-label h4 {
+    margin: 0 0 0.15rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #93c5fd;
+}
+.scan-label p {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+.scan-input-wrap {
+    display: flex;
+    gap: 0.6rem;
+    flex: 1;
+    min-width: 240px;
+}
+#barcodeInput {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(59,130,246,0.4);
+    border-radius: 8px;
+    color: #f1f5f9;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+#barcodeInput:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+}
+#barcodeInput.scan-success { border-color: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,0.2); }
+#barcodeInput.scan-error   { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.2);  }
+
+.scan-status {
+    font-size: 0.82rem;
+    min-width: 180px;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    display: none;
+}
+.scan-status.show { display: block; }
+.scan-status.success { background: rgba(16,185,129,0.15); color: #6ee7b7; border:1px solid rgba(16,185,129,0.3); }
+.scan-status.error   { background: rgba(239,68,68,0.12);  color: #fca5a5; border:1px solid rgba(239,68,68,0.25); }
+.scan-status.loading { background: rgba(59,130,246,0.12); color: #93c5fd; border:1px solid rgba(59,130,246,0.25); }
+
+.scan-ready-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    margin-right: 0.4rem;
+    animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%      { opacity:0.5; transform:scale(0.8); }
+}
+
+/* Lab test count badge colours */
+.badge-count { background: rgba(59,130,246,0.25); color:#93c5fd; }
+</style>
+{% endblock %}
+
 {% block content %}
+
+<!-- ═══ Barcode Scanner Panel ═══════════════════════════════ -->
+<div class="scan-panel">
+    <div class="scan-icon">📡</div>
+    <div class="scan-label">
+        <h4><span class="scan-ready-dot"></span>Barcode Scanner Ready</h4>
+        <p>Point USB scanner at label or type barcode manually</p>
+    </div>
+    <div class="scan-input-wrap">
+        <input type="text"
+               id="barcodeInput"
+               placeholder="FMD12345678"
+               autocomplete="off"
+               spellcheck="false"
+               maxlength="20"
+               autofocus>
+        <button class="btn btn-primary" id="scanBtn" onclick="doLookup()">Lookup</button>
+    </div>
+    <div class="scan-status" id="scanStatus"></div>
+</div>
+
+<!-- ═══ Evidence List Card ══════════════════════════════════ -->
 <div class="glass-card">
     <div class="card-header">
-        <h3 class="card-title">Evidence & Lab Tests</h3>
+        <h3 class="card-title">Evidence &amp; Lab Tests</h3>
+        {% if not user.is_viewer %}
+        <a href="{% url 'evidence:create' %}" class="btn btn-primary">+ Add Evidence</a>
+        {% endif %}
     </div>
-    
+
+    <!-- Filters -->
+    <form method="get" class="list-filters" style="margin-bottom:1rem;">
+        <div class="filter-input">
+            <input type="text" name="q" value="{{ q }}" class="form-input"
+                   placeholder="Search case no., type, or barcode...">
+        </div>
+        <div class="filter-select">
+            <select name="status" class="form-select">
+                <option value="">All Statuses</option>
+                <option value="Pending"    {% if status == 'Pending'    %}selected{% endif %}>Pending</option>
+                <option value="InProgress" {% if status == 'InProgress' %}selected{% endif %}>In Progress</option>
+                <option value="Completed"  {% if status == 'Completed'  %}selected{% endif %}>Completed</option>
+                <option value="Failed"     {% if status == 'Failed'     %}selected{% endif %}>Failed</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-secondary">Filter</button>
+        <a href="{% url 'evidence:list' %}" class="btn btn-secondary">Clear</a>
+    </form>
+
     <div class="table-responsive">
         <table class="glass-table">
             <thead>
@@ -14,53 +147,168 @@
                     <th>Barcode</th>
                     <th>Item No.</th>
                     <th>Case No.</th>
+                    <th>Patient</th>
                     <th>Type</th>
-                    <th>Collection Date</th>
-                    <th>Analysis Status</th>
+                    <th>Collected</th>
+                    <th>Lab Tests</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for ev in page_obj %}
                 <tr>
-                    <td><span style="font-family: monospace; letter-spacing: 1px;">{{ ev.barcode_number }}</span></td>
-                    <td>{{ ev.evidence_number }}</td>
+                    <td>
+                        <span style="font-family:'Courier New',monospace; letter-spacing:1.5px; font-size:0.82rem;">
+                            {{ ev.barcode_number }}
+                        </span>
+                    </td>
+                    <td><strong>{{ ev.evidence_number }}</strong></td>
                     <td><a href="{% url 'cases:detail' ev.case.case_id %}">{{ ev.case.case_number }}</a></td>
+                    <td>{{ ev.case.patient.full_name }}</td>
                     <td>{{ ev.evidence_type }}</td>
-                    <td>{{ ev.collection_date|date:"Y-m-d H:i" }}</td>
+                    <td>{{ ev.collection_date|date:"Y-m-d" }}</td>
+                    <td>
+                        {% with count=ev.lab_tests.count %}
+                        {% if count > 0 %}
+                            <span class="badge badge-count">{{ count }} test{{ count|pluralize }}</span>
+                        {% else %}
+                            <span class="badge badge-dark" style="opacity:0.6;">None</span>
+                        {% endif %}
+                        {% endwith %}
+                    </td>
                     <td>
                         {% if ev.analysis_status == 'Completed' %}
                             <span class="badge badge-success">Completed</span>
                         {% elif ev.analysis_status == 'Pending' %}
                             <span class="badge badge-warning">Pending</span>
+                        {% elif ev.analysis_status == 'InProgress' %}
+                            <span class="badge badge-info">In Progress</span>
                         {% else %}
-                            <span class="badge badge-info">{{ ev.analysis_status }}</span>
+                            <span class="badge badge-secondary">{{ ev.analysis_status }}</span>
                         {% endif %}
                     </td>
-                    <td>
-                        <a href="{% url 'evidence:edit' ev.evidence_id %}" class="btn btn-sm btn-secondary">View / Edit</a>
+                    <td style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                        <a href="{% url 'evidence:detail' ev.evidence_id %}" class="btn btn-sm btn-secondary">View</a>
+                        {% if not user.is_viewer %}
+                        <a href="{% url 'evidence:edit' ev.evidence_id %}" class="btn btn-sm btn-secondary">Edit</a>
+                        {% endif %}
                         {% if user.is_administrator or user.is_lab_tech %}
-                        <a href="{% url 'evidence:labtest_create' ev.evidence_id %}" class="btn btn-sm btn-primary">+ Lab Test</a>
+                        <a href="{% url 'evidence:labtest_create' ev.evidence_id %}" class="btn btn-sm btn-primary">+ Test</a>
                         {% endif %}
                     </td>
                 </tr>
                 {% empty %}
-                <tr><td colspan="7" style="text-align: center; padding: 2rem;">No evidence found.</td></tr>
+                <tr>
+                    <td colspan="9" style="text-align:center; padding:2.5rem; color:var(--text-muted);">
+                        No evidence records found.
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-    
+
     <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-sm btn-secondary">Prev</a>
+                <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}&status={{ status }}" class="btn btn-sm btn-secondary">Prev</a>
             {% endif %}
-            <span class="current" style="margin: 0 1rem;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            <span class="current" style="margin:0 1rem;">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-sm btn-secondary">Next</a>
+                <a href="?page={{ page_obj.next_page_number }}&q={{ q }}&status={{ status }}" class="btn btn-sm btn-secondary">Next</a>
             {% endif %}
         </span>
     </div>
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    const input  = document.getElementById('barcodeInput');
+    const status = document.getElementById('scanStatus');
+    let   debounceTimer = null;
+
+    // ── Show status helper ───────────────────────────────────────────────
+    function showStatus(msg, type) {
+        status.textContent = msg;
+        status.className   = 'scan-status show ' + type;
+    }
+    function clearStatus() {
+        status.className = 'scan-status';
+        input.className  = '';
+    }
+
+    // ── Main lookup via AJAX ─────────────────────────────────────────────
+    function doAjaxLookup(bc) {
+        if (!bc) return;
+        showStatus('Scanning...', 'loading');
+
+        fetch(`{% url 'evidence:barcode_lookup' %}?bc=${encodeURIComponent(bc)}&format=json`, {
+            headers: {'X-CSRFToken': '{{ csrf_token }}'}
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.found) {
+                input.className = 'scan-success';
+                showStatus(
+                    `Found: ${data.evidence_number} \u2014 ${data.evidence_type} (${data.case_number})`,
+                    'success'
+                );
+                // Redirect after 600ms so the user sees the success flash
+                setTimeout(() => { window.location = data.redirect_url; }, 600);
+            } else {
+                input.className = 'scan-error';
+                showStatus(`No evidence found for barcode: ${bc}`, 'error');
+                setTimeout(clearStatus, 3000);
+            }
+        })
+        .catch(() => {
+            input.className = 'scan-error';
+            showStatus('Network error \u2014 please try again', 'error');
+            setTimeout(clearStatus, 3000);
+        });
+    }
+
+    // ── Expose for the Lookup button ─────────────────────────────────────
+    window.doLookup = function () {
+        const bc = input.value.trim();
+        if (bc.length >= 4) doAjaxLookup(bc);
+    };
+
+    // ── Auto-trigger on Enter (USB scanner sends Enter after barcode) ────
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            clearTimeout(debounceTimer);
+            const bc = input.value.trim();
+            if (bc.length >= 4) doAjaxLookup(bc);
+        }
+    });
+
+    // ── Auto-trigger after 800ms of no typing (scanner pastes fast) ─────
+    input.addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        clearStatus();
+        const bc = input.value.trim();
+        if (bc.length >= 8) {
+            // USB scanner fills 11 chars (FMD + 8 digits) almost instantly
+            // Treat rapid fill (>= 8 chars) as a scan → lookup immediately
+            debounceTimer = setTimeout(() => doAjaxLookup(bc), 150);
+        }
+    });
+
+    // ── Keep scanner input focused unless user clicks elsewhere ─────────
+    document.addEventListener('keydown', function (e) {
+        const tag = document.activeElement.tagName.toLowerCase();
+        if (tag !== 'input' && tag !== 'select' && tag !== 'textarea') {
+            input.focus();
+        }
+    });
+})();
+</script>
 {% endblock %}

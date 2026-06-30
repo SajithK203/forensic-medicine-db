@@ -9,102 +9,107 @@
     <div class="card-header">
         <h3 class="card-title">{{ action }}</h3>
     </div>
-    
+
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        
+
         {% if form.staff_type %}
-            <!-- STAFF FORM -->
+        <!-- STAFF FORM -->
+        <div class="form-group">
+            <label class="form-label">{{ form.full_name.label }}</label>
+            {{ form.full_name }}
+        </div>
+        <div class="grid-2">
             <div class="form-group">
-                <label class="form-label">{{ form.full_name.label }}</label>
-                {{ form.full_name }}
+                <label class="form-label">{{ form.staff_type.label }}</label>
+                {{ form.staff_type }}
             </div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label class="form-label">{{ form.staff_type.label }}</label>
-                    {{ form.staff_type }}
-                </div>
-                <div class="form-group">
-                    <label class="form-label">{{ form.department.label }}</label>
-                    {{ form.department }}
-                </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.department.label }}</label>
+                <small style="color: var(--text-muted); display: block; margin-top: 0.25rem;">Select the department this
+                    staff member belongs to</small>
+
+                {{ form.department }}
+
             </div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label class="form-label">{{ form.designation.label }}</label>
-                    {{ form.designation }}
-                </div>
-                <div class="form-group">
-                    <label class="form-label">{{ form.contact_no.label }}</label>
-                    {{ form.contact_no }}
-                </div>
+        </div>
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.designation.label }}</label>
+                {{ form.designation }}
             </div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label class="form-label">{{ form.email.label }}</label>
-                    {{ form.email }}
-                </div>
-                <div class="form-group">
-                    <label class="form-label">{{ form.join_date.label }}</label>
-                    {{ form.join_date }}
-                </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.contact_no.label }}</label>
+                {{ form.contact_no }}
             </div>
-            <div class="form-group" style="margin-top: 1rem;">
-                <label style="display: flex; align-items: center; gap: 0.5rem;">
-                    {{ form.is_active }} {{ form.is_active.label }}
-                </label>
+        </div>
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.email.label }}</label>
+                {{ form.email }}
             </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.join_date.label }}</label>
+                {{ form.join_date }}
+            </div>
+        </div>
+        <div class="form-group" style="margin-top: 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                {{ form.is_active }} {{ form.is_active.label }}
+            </label>
+        </div>
         {% else %}
-            <!-- DOCTOR FORM -->
+        <!-- DOCTOR FORM -->
+        <div class="form-group">
+            <label class="form-label">Link to Staff Member</label>
+            {{ form.staff }}
+            <small style="color: var(--text-muted); display: block; margin-top: 0.25rem;">Must be an active staff member
+                of type 'Doctor'</small>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ form.full_name.label }}</label>
+            {{ form.full_name }}
+        </div>
+
+        <div class="grid-2">
             <div class="form-group">
-                <label class="form-label">Link to Staff Member</label>
-                {{ form.staff }}
-                <small style="color: var(--text-muted); display: block; margin-top: 0.25rem;">Must be an active staff member of type 'Doctor'</small>
+                <label class="form-label">{{ form.nmc_number.label }}</label>
+                {{ form.nmc_number }}
             </div>
-            
             <div class="form-group">
-                <label class="form-label">{{ form.full_name.label }}</label>
-                {{ form.full_name }}
+                <label class="form-label">{{ form.license_number.label }}</label>
+                {{ form.license_number }}
             </div>
-            
-            <div class="grid-2">
-                <div class="form-group">
-                    <label class="form-label">{{ form.nmc_number.label }}</label>
-                    {{ form.nmc_number }}
-                </div>
-                <div class="form-group">
-                    <label class="form-label">{{ form.license_number.label }}</label>
-                    {{ form.license_number }}
-                </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.qualification.label }}</label>
+                {{ form.qualification }}
             </div>
-            
-            <div class="grid-2">
-                <div class="form-group">
-                    <label class="form-label">{{ form.qualification.label }}</label>
-                    {{ form.qualification }}
-                </div>
-                <div class="form-group">
-                    <label class="form-label">{{ form.specialization.label }}</label>
-                    {{ form.specialization }}
-                </div>
+            <div class="form-group">
+                <label class="form-label">{{ form.specialization.label }}</label>
+                {{ form.specialization }}
             </div>
-            
-            <div class="grid-2">
-                <div class="form-group">
-                    <label class="form-label">{{ form.jmo_type.label }}</label>
-                    {{ form.jmo_type }}
-                </div>
-                <div class="form-group">
-                    <label class="form-label">{{ form.office_contact_no.label }}</label>
-                    {{ form.office_contact_no }}
-                </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">{{ form.jmo_type.label }}</label>
+                {{ form.jmo_type }}
             </div>
-            
-            <div class="form-group" style="margin-top: 1rem;">
-                <label style="display: flex; align-items: center; gap: 0.5rem;">
-                    {{ form.is_active }} {{ form.is_active.label }}
-                </label>
+            <div class="form-group">
+                <label class="form-label">{{ form.office_contact_no.label }}</label>
+                {{ form.office_contact_no }}
             </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                {{ form.is_active }} {{ form.is_active.label }}
+            </label>
+        </div>
         {% endif %}
 
         <div style="margin-top: 2rem; display: flex; gap: 1rem;">
