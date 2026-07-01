@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="profile-page">
+    <h1 class="page-title">Edit Profile</h1>
+    <p class="page-subtitle">Update your personal information and password</p>
+
+    <div class="grid-2" style="align-items: start; max-width: 900px;">
+
+        <!-- Edit Profile Form Card -->
+        <div class="glass-card" style="grid-column: 1 / -1;">
+            <div class="card-header">
+                <h3 class="card-title">{{ user.get_role_icon }} {{ user.get_full_name|default:user.username }}</h3>
+                <a href="{% url 'accounts:profile' %}" class="btn btn-secondary btn-sm">← Back to Profile</a>
+            </div>
+
+            <!-- Non-editable info row -->
+            <div style="display:flex; gap:1.5rem; align-items:center; padding:1rem 0; border-bottom:1px solid var(--border-glass); margin-bottom:1.5rem; flex-wrap:wrap;">
+                <div>
+                    <span style="color:var(--text-muted); font-size:.8rem;">USERNAME</span>
+                    <div style="font-weight:600; font-size:1rem;">{{ user.username }}</div>
+                </div>
+                <div>
+                    <span style="color:var(--text-muted); font-size:.8rem;">ROLE</span>
+                    <div><span class="badge {{ user.get_role_badge }}">{{ user.get_role_display }}</span></div>
+                </div>
+                <div>
+                    <span style="color:var(--text-muted); font-size:.8rem;">ACCOUNT STATUS</span>
+                    <div>
+                        {% if user.is_active %}
+                            <span class="badge badge-success">Active</span>
+                        {% else %}
+                            <span class="badge badge-danger">Inactive</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <form method="post" action="{% url 'accounts:edit_profile' %}" novalidate>
+                {% csrf_token %}
+
+                <!-- ── Personal Information ── -->
+                <h4 style="font-size:.95rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:1rem;">
+                    Personal Information
+                </h4>
+
+                <div class="grid-2" style="margin-bottom:1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label" for="id_first_name">{{ form.first_name.label }}</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            {% for err in form.first_name.errors %}
+                                <div style="color:var(--danger); font-size:.82rem; margin-top:.3rem;">{{ err }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="id_last_name">{{ form.last_name.label }}</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            {% for err in form.last_name.errors %}
+                                <div style="color:var(--danger); font-size:.82rem; margin-top:.3rem;">{{ err }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:2rem;">
+                    <label class="form-label" for="id_email">{{ form.email.label }}</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        {% for err in form.email.errors %}
+                            <div style="color:var(--danger); font-size:.82rem; margin-top:.3rem;">{{ err }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- ── Change Password ── -->
+                <div style="border-top:1px solid var(--border-glass); padding-top:1.5rem; margin-bottom:1.5rem;">
+                    <h4 style="font-size:.95rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:.4rem;">
+                        Change Password
+                    </h4>
+                    <p style="color:var(--text-muted); font-size:.82rem; margin-bottom:1rem;">
+                        Leave all password fields blank to keep your current password.
+                    </p>
+
+                    <div class="form-group">
+                        <label class="form-label" for="id_current_password">{{ form.current_password.label }}</label>
+                        {{ form.current_password }}
+                        {% if form.current_password.errors %}
+                            {% for err in form.current_password.errors %}
+                                <div style="color:var(--danger); font-size:.82rem; margin-top:.3rem;">{{ err }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="id_new_password">{{ form.new_password.label }}</label>
+                            {{ form.new_password }}
+                            {% if form.new_password.errors %}
+                                {% for err in form.new_password.errors %}
+                                    <div style="color:var(--danger); font-size:.82rem; margin-top:.3rem;">{{ err }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_confirm_password">{{ form.confirm_password.label }}</label>
+                            {{ form.confirm_password }}
+                            {% if form.confirm_password.errors %}
+                                {% for err in form.confirm_password.errors %}
+                                    <div style="color:var(--danger); font-size:.82rem; margin-top:.3rem;">{{ err }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Submit ── -->
+                <div style="display:flex; gap:1rem; align-items:center;">
+                    <button type="submit" class="btn btn-primary">
+                        💾 Save Changes
+                    </button>
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

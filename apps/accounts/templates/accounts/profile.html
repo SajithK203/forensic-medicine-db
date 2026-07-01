@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="profile-page">
+    <h1 class="page-title">My Profile</h1>
+    <p class="page-subtitle">Your account information and recent activity</p>
+
+    <div class="grid-2" style="align-items: start;">
+
+        <!-- Account Info Card -->
+        <div class="glass-card">
+            <div class="card-header">
+                <h3 class="card-title">Account Information</h3>
+                <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary btn-sm">
+                    ✏️ Edit Profile
+                </a>
+            </div>
+
+            <div class="profile-page-avatar">
+                <div class="profile-page-icon">{{ user.get_role_icon }}</div>
+                <div>
+                    <div class="profile-page-name">{{ user.get_full_name|default:user.username }}</div>
+                    <div style="color:var(--text-muted);font-size:.9rem;">@{{ user.username }}</div>
+                    <span class="badge {{ user.get_role_badge }}" style="margin-top:.5rem;display:inline-block;">{{ user.get_role_display }}</span>
+                </div>
+            </div>
+
+            <table class="glass-table" style="margin-top:1.5rem;">
+                <tbody>
+                    <tr>
+                        <td style="color:var(--text-muted);width:140px;">Username</td>
+                        <td><strong>{{ user.username }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--text-muted);">Full Name</td>
+                        <td>{{ user.get_full_name|default:"—" }}</td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--text-muted);">Email</td>
+                        <td>{{ user.email|default:"—" }}</td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--text-muted);">Role</td>
+                        <td>{{ user.get_role_display }}</td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--text-muted);">Account Status</td>
+                        <td>
+                            {% if user.is_active %}
+                                <span class="badge badge-success">Active</span>
+                            {% else %}
+                                <span class="badge badge-danger">Inactive</span>
+                            {% endif %}
+                            {% if user.is_locked %}
+                                <span class="badge badge-danger" style="margin-left:.25rem;">Locked</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--text-muted);">Last Login</td>
+                        <td>{{ user.last_login|date:"d M Y, H:i"|default:"—" }}</td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--text-muted);">Last Login IP</td>
+                        <td>{{ user.last_login_ip|default:"—" }}</td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--text-muted);">Joined</td>
+                        <td>{{ user.date_joined|date:"d M Y" }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Recent Activity Card -->
+        <div class="glass-card">
+            <div class="card-header">
+                <h3 class="card-title">Recent Activity</h3>
+                <span class="badge badge-secondary">Last 10 actions</span>
+            </div>
+
+            {% if recent_activity %}
+            <div class="activity-list">
+                {% for log in recent_activity %}
+                <div class="activity-item">
+                    <div class="activity-action-badge">{{ log.action_type }}</div>
+                    <div class="activity-details">
+                        <div class="activity-desc">
+                            {% if log.model_name %}{{ log.model_name }}{% endif %}
+                            {% if log.record_id %} &mdash; <code>{{ log.record_id }}</code>{% endif %}
+                            {% if log.action_details %}<span style="color:var(--text-muted);font-size:.82rem;"> {{ log.action_details }}</span>{% endif %}
+                        </div>
+                        <div class="activity-time">{{ log.logged_at|date:"d M Y, H:i" }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p style="color:var(--text-muted);text-align:center;padding:2rem 0;">No recent activity recorded.</p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}
