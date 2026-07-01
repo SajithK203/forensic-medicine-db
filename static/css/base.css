@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
 
 :root {
     /* Colors */
@@ -38,7 +38,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     background-color: var(--bg-dark);
     color: var(--text-main);
     min-height: 100vh;
@@ -79,10 +79,11 @@ a:hover {
 /* Header */
 .top-header {
     height: var(--header-height);
-    background: var(--bg-panel);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-bottom: 1px solid var(--border-glass);
+    background: linear-gradient(90deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -91,7 +92,7 @@ a:hover {
     top: 0;
     z-index: 40;
     gap: 1rem;
-    overflow: visible; /* allow dropdown to overflow below */
+    overflow: visible;
 }
 
 /* Left: page title — fixed width, no shrink */
@@ -125,22 +126,25 @@ a:hover {
 }
 
 .btn-logout {
-    background: rgba(239, 68, 68, 0.1);
+    background: transparent;
     color: var(--danger);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    padding: 0.4rem 0.85rem;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    padding: 0.45rem 1rem;
     border-radius: 8px;
-    font-size: 0.82rem;
-    font-weight: 500;
+    font-size: 0.85rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: all 0.3s ease;
     white-space: nowrap;
     line-height: 1;
 }
 
 .btn-logout:hover {
-    background: var(--danger);
-    color: white;
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
+    color: #ef4444;
+    transform: translateY(-1px);
 }
 
 /* Content Area */
