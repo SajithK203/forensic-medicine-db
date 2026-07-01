@@ -2,40 +2,54 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/dashboard/index.css' %}">
+<link rel="stylesheet" href="{% static 'css/dashboard/index.css' %}?v={% now 'U' %}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
 {% block content %}
 <div class="kpi-grid">
-    <div class="glass-card kpi-card">
-        <div class="kpi-icon icon-blue">👥</div>
+    <a href="{% url 'cases:list' %}" class="glass-card kpi-card" id="kpi-total-cases">
+        <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg></div>
+        <div class="kpi-info">
+            <h3>Total Cases</h3>
+            <p>{{ total_cases }}</p>
+        </div>
+    </a>
+    <a href="{% url 'patients:list' %}" class="glass-card kpi-card" id="kpi-total-patients">
+        <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div>
         <div class="kpi-info">
             <h3>Total Patients</h3>
             <p>{{ total_patients }}</p>
         </div>
-    </div>
-    <div class="glass-card kpi-card">
-        <div class="kpi-icon icon-purple">📁</div>
+    </a>
+    <a href="{% url 'cases:list' %}" class="glass-card kpi-card" id="kpi-active-cases">
+        <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
         <div class="kpi-info">
             <h3>Active Cases</h3>
             <p>{{ active_cases }}</p>
         </div>
-    </div>
-    <div class="glass-card kpi-card">
-        <div class="kpi-icon icon-orange">🧪</div>
+    </a>
+    <a href="{% url 'cases:list' %}" class="glass-card kpi-card" id="kpi-critical-cases">
+        <div class="kpi-icon icon-forensic-danger"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg></div>
+        <div class="kpi-info">
+            <h3>Critical Cases</h3>
+            <p>{{ critical_cases }}</p>
+        </div>
+    </a>
+    <a href="{% url 'evidence:list' %}?status=Pending" class="glass-card kpi-card" id="kpi-pending-evidence">
+        <div class="kpi-icon icon-forensic-alert"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg></div>
         <div class="kpi-info">
             <h3>Pending Evidence</h3>
             <p>{{ pending_evidence }}</p>
         </div>
-    </div>
-    <div class="glass-card kpi-card">
-        <div class="kpi-icon icon-green">⚖️</div>
+    </a>
+    <a href="{% url 'reports:list' %}" class="glass-card kpi-card" id="kpi-pending-reports">
+        <div class="kpi-icon icon-forensic-alert"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
         <div class="kpi-info">
             <h3>Pending Reports</h3>
             <p>{{ pending_reports }}</p>
         </div>
-    </div>
+    </a>
 </div>
 
 <div class="dashboard-grid">
@@ -60,7 +74,61 @@
     </div>
 </div>
 
+{% if overdue_cases %}
+<div class="glass-card alert-card">
+    <div class="card-header">
+        <h3 class="card-title" style="color: #ef4444; display: flex; align-items: center; gap: 0.5rem;">
+            <span class="pulse-icon">⚠️</span> Overdue Cases (>30 Days)
+            <span class="badge badge-danger" style="margin-left: 0.5rem; background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);">{{ overdue_cases|length }} cases need attention</span>
+        </h3>
+        <a href="{% url 'cases:list' %}?status=InProgress" class="btn-alert">View All Active</a>
+    </div>
+    <div class="table-responsive">
+        <table class="glass-table alert-table" style="background: transparent;">
+            <thead>
+                <tr>
+                    <th>Case No.</th>
+                    <th>Patient</th>
+                    <th>Doctor In Charge</th>
+                    <th>Date Logged</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for case in overdue_cases %}
+                <tr>
+                    <td><a href="{% url 'cases:detail' case.pk %}" style="color: #ef4444; font-weight: bold;">{{ case.case_number }}</a></td>
+                    <td>{{ case.patient.full_name }}</td>
+                    <td>{{ case.doctor.full_name }}</td>
+                    <td>{{ case.incident_date|date:"Y-m-d" }}</td>
+                    <td><span class="badge {{ case.status_badge }}">{{ case.case_status }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
 <div class="dashboard-grid">
+    <!-- Chart: Death Types (Bar) -->
+    <div class="glass-card mortality-card" style="grid-column: 1 / -1; margin-bottom: 0;">
+        <div class="card-header" style="display: flex; align-items: center; gap: 0.75rem;">
+            <div class="mortality-header-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+            </div>
+            <div>
+                <h3 class="card-title" style="margin-bottom: 2px;">Mortality Breakdown</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin: 0;">Distribution of causes of death</p>
+            </div>
+        </div>
+        <div class="chart-container" style="height: 250px;">
+            <canvas id="deathChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-grid" style="margin-top: 1.5rem;">
     <!-- Recent Cases Table -->
     <div class="glass-card">
         <div class="card-header">
@@ -123,48 +191,97 @@
 {{ months_clinical|json_script:"monthsClinical" }}
 {{ months_autopsy|json_script:"monthsAutopsy" }}
 {{ type_data|json_script:"typeData" }}
+{{ death_data|json_script:"deathData" }}
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         Chart.defaults.color = '#94a3b8';
-        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
 
         const mLabels = JSON.parse(document.getElementById('monthsLabels').textContent);
         const mClinical = JSON.parse(document.getElementById('monthsClinical').textContent);
         const mAutopsy = JSON.parse(document.getElementById('monthsAutopsy').textContent);
 
-        new Chart(document.getElementById('trendChart'), {
+        const trendCtx = document.getElementById('trendChart').getContext('2d');
+        
+        // Gradient for Clinical (Cyan)
+        const clinicalGradient = trendCtx.createLinearGradient(0, 0, 0, 300);
+        clinicalGradient.addColorStop(0, 'rgba(56, 189, 248, 0.5)'); 
+        clinicalGradient.addColorStop(1, 'rgba(56, 189, 248, 0)');   
+
+        // Gradient for Autopsy (Purple)
+        const autopsyGradient = trendCtx.createLinearGradient(0, 0, 0, 300);
+        autopsyGradient.addColorStop(0, 'rgba(168, 85, 247, 0.5)'); 
+        autopsyGradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
+
+        const trendChart = new Chart(trendCtx, {
             type: 'line',
             data: {
                 labels: mLabels,
                 datasets: [
                     {
-                        label: 'Clinical',
+                        label: 'Clinical Exams',
                         data: mClinical,
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
+                        borderColor: '#38bdf8', // Cyan
+                        borderWidth: 3,
+                        backgroundColor: clinicalGradient,
+                        fill: true,
+                        tension: 0.4, // Smooth curve
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#38bdf8',
+                        pointHoverBorderWidth: 2
                     },
                     {
-                        label: 'Autopsy',
+                        label: 'Autopsies',
                         data: mAutopsy,
-                        borderColor: '#06b6d4',
-                        backgroundColor: 'rgba(6, 182, 212, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
+                        borderColor: '#a855f7', // Purple
+                        borderWidth: 3,
+                        backgroundColor: autopsyGradient,
+                        fill: true,
+                        tension: 0.4, // Smooth curve
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#a855f7',
+                        pointHoverBorderWidth: 2
                     }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { position: 'top' } },
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: { 
+                        position: 'top',
+                        labels: { color: '#94a3b8', usePointStyle: true, padding: 20 }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                        titleColor: '#38bdf8',
+                        bodyColor: '#f8fafc',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        padding: 12,
+                        cornerRadius: 8,
+                        usePointStyle: true
+                    }
+                },
                 scales: {
-                    y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
-                    x: { grid: { display: false } }
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, color: '#94a3b8', padding: 10 },
+                        grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false }
+                    },
+                    x: {
+                        ticks: { color: '#94a3b8', padding: 10 },
+                        grid: { display: false, drawBorder: false }
+                    }
                 }
             }
         });
@@ -173,23 +290,131 @@
         const tLabels = tDataRaw.map(d => d.case_type);
         const tCounts = tDataRaw.map(d => d.count);
         
-        new Chart(document.getElementById('typeChart'), {
+        const typeChart = new Chart(document.getElementById('typeChart'), {
             type: 'doughnut',
             data: {
                 labels: tLabels,
                 datasets: [{
                     data: tCounts,
-                    backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981'],
-                    borderWidth: 0
+                    backgroundColor: [
+                        'rgba(56, 189, 248, 0.9)',  // Clinical Cyan
+                        'rgba(59, 130, 246, 0.85)', // Deep Blue
+                        'rgba(99, 102, 241, 0.8)',  // Sleek Indigo
+                        'rgba(139, 92, 246, 0.75)', // Muted Purple
+                        'rgba(30, 41, 59, 0.7)'     // Slate Gray
+                    ],
+                    borderColor: 'rgba(15, 23, 42, 1)', // Seamless background border
+                    borderWidth: 3,
+                    hoverOffset: 6
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '70%',
-                plugins: { legend: { position: 'bottom' } }
+                cutout: '75%', // Sleek thin ring
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: '#94a3b8', usePointStyle: true, padding: 20, font: { size: 13 } }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                        titleColor: '#38bdf8',
+                        bodyColor: '#f8fafc',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: true,
+                        usePointStyle: true
+                    }
+                }
             }
         });
+
+        const dDataRaw = JSON.parse(document.getElementById('deathData').textContent);
+        const dLabels = dDataRaw.map(d => d.death_type || 'Unknown');
+        const dCounts = dDataRaw.map(d => d.count);
+        const deathCtx = document.getElementById('deathChart').getContext('2d');
+        const deathGradient = deathCtx.createLinearGradient(0, 0, 0, 300);
+        deathGradient.addColorStop(0, 'rgba(56, 189, 248, 0.95)'); // Cyan top
+        deathGradient.addColorStop(1, 'rgba(15, 23, 42, 0.2)');    // Fade to background
+
+        const deathChart = new Chart(deathCtx, {
+            type: 'bar',
+            data: {
+                labels: dLabels,
+                datasets: [{
+                    label: 'Number of Cases',
+                    data: dCounts,
+                    backgroundColor: deathGradient,
+                    hoverBackgroundColor: 'rgba(56, 189, 248, 1)',
+                    borderColor: 'rgba(56, 189, 248, 0.5)',
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                        titleColor: '#38bdf8',
+                        bodyColor: '#f8fafc',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, color: '#94a3b8', padding: 10 },
+                        grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false }
+                    },
+                    x: {
+                        ticks: { color: '#94a3b8', padding: 10 },
+                        grid: { display: false, drawBorder: false }
+                    }
+                }
+            }
+        });
+
+        // --- Real-time AJAX Polling ---
+        setInterval(() => {
+            fetch(window.location.pathname + "?ajax=1")
+                .then(response => response.json())
+                .then(data => {
+                    // Update KPIs
+                    document.querySelector('#kpi-total-cases p').innerText = data.kpis.total_cases;
+                    document.querySelector('#kpi-total-patients p').innerText = data.kpis.total_patients;
+                    document.querySelector('#kpi-active-cases p').innerText = data.kpis.active_cases;
+                    document.querySelector('#kpi-critical-cases p').innerText = data.kpis.critical_cases;
+                    document.querySelector('#kpi-pending-evidence p').innerText = data.kpis.pending_evidence;
+                    document.querySelector('#kpi-pending-reports p').innerText = data.kpis.pending_reports;
+
+                    // Update Trend Chart
+                    trendChart.data.labels = data.charts.trend.labels;
+                    trendChart.data.datasets[0].data = data.charts.trend.clinical;
+                    trendChart.data.datasets[1].data = data.charts.trend.autopsy;
+                    trendChart.update();
+
+                    // Update Type Chart
+                    typeChart.data.labels = data.charts.type.labels;
+                    typeChart.data.datasets[0].data = data.charts.type.data;
+                    typeChart.update();
+
+                    // Update Death Chart
+                    deathChart.data.labels = data.charts.death.labels;
+                    deathChart.data.datasets[0].data = data.charts.death.data;
+                    deathChart.update();
+                })
+                .catch(err => console.error('Dashboard polling failed:', err));
+        }, 30000); // 30 seconds
     });
 </script>
 {% endblock %}
