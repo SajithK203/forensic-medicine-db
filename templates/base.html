@@ -6,17 +6,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if page_title %}{{ page_title }} | {% endif %}Forensic DB</title>
     
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/components.css' %}">
-    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}?v={% now 'U' %}">
     {% block extra_css %}{% endblock %}
+    <style>
+        /* Force correct sizing for SVG icons and header navbar elements */
+        .header-search-wrap .search-icon {
+            width: 15px !important;
+            height: 15px !important;
+            position: absolute;
+            left: 0.7rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+            display: block !important;
+        }
+        .profile-avatar-btn {
+            width: 34px !important;
+            height: 34px !important;
+            min-width: 34px !important;
+            max-width: 34px !important;
+            min-height: 34px !important;
+            max-height: 34px !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            text-decoration: none !important;
+            cursor: pointer !important;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+        }
+        .profile-avatar-btn:hover {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.45) !important;
+            border-color: var(--primary-color) !important;
+        }
+        .user-greeting {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+            font-size: 0.85rem !important;
+            color: var(--text-muted) !important;
+            white-space: nowrap !important;
+        }
+        .header-user-menu {
+            display: flex !important;
+            align-items: center !important;
+            gap: 1rem !important;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <div class="logo-text">FMD SYSTEM</div>
+                <a href="{% url 'core:dashboard' %}" class="sidebar-brand">
+                    <img src="{% static 'images/logo.jpg' %}" alt="FORENSIDB Logo" class="sidebar-logo-img">
+                    <div class="sidebar-brand-name">FORENSIDB</div>
+                </a>
             </div>
             
             <nav class="sidebar-nav">
@@ -102,23 +153,62 @@
 
         <!-- Main Content Wrapper -->
         <main class="main-content">
-            <!-- Top Header -->
+        <!-- Top Header / Navbar -->
             <header class="top-header">
+                <!-- Left: Page title / breadcrumb -->
                 <div class="header-title">
                     <h2>{% if page_title %}{{ page_title }}{% else %}Dashboard{% endif %}</h2>
                 </div>
+
+                <!-- Center: Global search bar -->
+                <form class="header-search-form" method="get" action="{% url 'core:search' %}" role="search">
+                    <div class="header-search-wrap">
+                        <svg class="search-icon" width="15" height="15" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/>
+                        </svg>
+                        <input
+                            id="global-search-input"
+                            class="header-search-input"
+                            type="search"
+                            name="q"
+                            value="{{ request.GET.q|default:'' }}"
+                            placeholder="Search cases, IDs, patients…"
+                            autocomplete="off"
+                            aria-label="Global search"
+                        >
+                    </div>
+                </form>
+
+                <!-- Right: Profile avatar + logout -->
                 <div class="header-user-menu">
+                    <!-- User greeting directly in navbar -->
                     <div class="user-greeting">
                         {{ user.get_role_icon }} 
-                        Welcome, {{ user.get_full_name|default:user.username }} 
+                        Welcome, {{ user.get_full_name|default:user.username }}
                         <span class="badge {{ user.get_role_badge }}">{{ user.get_role_display }}</span>
                     </div>
+
+                    <!-- Profile avatar — clicking goes directly to profile page -->
+                    <div class="profile-dropdown-wrap" id="profileDropdownWrap">
+                        <!-- Avatar is a direct link to profile -->
+                        <a href="{% url 'accounts:profile' %}"
+                           class="profile-avatar-btn"
+                           id="profileAvatarBtn"
+                           title="View My Profile"
+                           aria-label="My Profile">
+                            <span class="avatar-initials">{{ user.get_full_name|default:user.username|slice:":2"|upper }}</span>
+                        </a>
+                    </div>
+
+                    <!-- Logout button (kept as-is) -->
                     <form method="post" action="{% url 'accounts:logout' %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-logout">Logout</button>
                     </form>
                 </div>
             </header>
+
 
             <!-- Page Content -->
             <div class="content-wrapper">
