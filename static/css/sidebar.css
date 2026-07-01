@@ -96,22 +96,26 @@
 }
 
 .nav-item:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(90deg, rgba(56, 189, 248, 0.08) 0%, transparent 100%);
     color: white;
+    transform: translateX(4px);
 }
 
 .nav-item:hover svg {
-    color: var(--primary-color);
+    color: #38bdf8;
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.4));
 }
 
 .nav-item.active {
-    background: rgba(59, 130, 246, 0.15);
-    color: white;
-    border-left: 3px solid var(--primary-color);
+    background: linear-gradient(90deg, rgba(56, 189, 248, 0.15) 0%, transparent 100%);
+    color: #38bdf8;
+    border-left: 3px solid #38bdf8;
+    box-shadow: inset 4px 0 15px -4px rgba(56, 189, 248, 0.3);
 }
 
 .nav-item.active svg {
-    color: var(--primary-color);
+    color: #38bdf8;
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6));
 }
 
 .nav-badge {
