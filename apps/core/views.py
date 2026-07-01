@@ -101,3 +101,65 @@ def dashboard(request):
         'active_nav':        'dashboard',
     }
     return render(request, 'dashboard/index.html', context)
+
+
+@login_required
+def global_search(request):
+    """Global navbar search — queries Patients, Cases, Evidence and Reports."""
+    from apps.evidence.models import Evidence
+    from apps.reports.models  import CourtReport
+
+    q = request.GET.get('q', '').strip()
+    patients  = []
+    cases     = []
+    evidence  = []
+    reports   = []
+
+    if q:
+        patients = Patient.objects.filter(
+            Q(patient_id__icontains=q) |
+            Q(full_name__icontains=q) |
+            Q(nic_passport__icontains=q) |
+            Q(contact_no__icontains=q) |
+            Q(district__icontains=q)
+        ).order_by('full_name')[:20]
+
+        cases = ForensicCase.objects.select_related('patient', 'doctor').filter(
+            Q(case_id__icontains=q) |
+            Q(case_number__icontains=q) |
+            Q(patient__full_name__icontains=q) |
+            Q(incident_type__icontains=q) |
+            Q(incident_location__icontains=q) |
+            Q(police_report_no__icontains=q) |
+            Q(court_case_no__icontains=q) |
+            Q(case_status__icontains=q) |
+            Q(case_type__icontains=q)
+        ).order_by('-created_at')[:20]
+
+        evidence = Evidence.objects.select_related('case').filter(
+            Q(evidence_id__icontains=q) |
+            Q(evidence_type__icontains=q) |
+            Q(description__icontains=q) |
+            Q(case__case_number__icontains=q)
+        ).order_by('-submitted_at')[:10]
+
+        reports = CourtReport.objects.select_related('case').filter(
+            Q(report_id__icontains=q) |
+            Q(court_name__icontains=q) |
+            Q(case__case_number__icontains=q) |
+            Q(report_status__icontains=q)
+        ).order_by('-created_at')[:10]
+
+    total_results = len(patients) + len(cases) + len(evidence) + len(reports)
+
+    return render(request, 'core/search_results.html', {
+        'q':             q,
+        'patients':      patients,
+        'cases':         cases,
+        'evidence':      evidence,
+        'reports':       reports,
+        'total_results': total_results,
+        'page_title':    f'Search: {q}' if q else 'Search',
+        'active_nav':    '',
+    })
+

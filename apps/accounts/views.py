@@ -1,6 +1,7 @@
 from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 
@@ -48,3 +49,14 @@ def logout_view(request):
     logout(request)
     messages.info(request, 'You have been signed out.')
     return redirect('accounts:login')
+
+
+@login_required
+def profile_view(request):
+    from apps.core.models import ActivityLog
+    recent_activity = ActivityLog.objects.filter(user=request.user).order_by('-logged_at')[:10]
+    return render(request, 'accounts/profile.html', {
+        'page_title':      'My Profile',
+        'recent_activity': recent_activity,
+    })
+

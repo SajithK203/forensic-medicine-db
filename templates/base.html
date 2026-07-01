@@ -16,7 +16,10 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <div class="logo-text">FMD SYSTEM</div>
+                <a href="{% url 'core:dashboard' %}" class="sidebar-brand">
+                    <img src="{% static 'images/logo.jpg' %}" alt="FORENSIDB Logo" class="sidebar-logo-img">
+                    <div class="sidebar-brand-name">FORENSIDB</div>
+                </a>
             </div>
             
             <nav class="sidebar-nav">
