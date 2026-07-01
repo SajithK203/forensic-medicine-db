@@ -139,16 +139,24 @@ def global_search(request):
         evidence = Evidence.objects.select_related('case').filter(
             Q(evidence_id__icontains=q) |
             Q(evidence_type__icontains=q) |
-            Q(description__icontains=q) |
+            Q(evidence_description__icontains=q) |
+            Q(barcode_number__icontains=q) |
             Q(case__case_number__icontains=q)
-        ).order_by('-submitted_at')[:10]
+        ).order_by('-collection_date')[:10]
 
         reports = CourtReport.objects.select_related('case').filter(
             Q(report_id__icontains=q) |
             Q(court_name__icontains=q) |
+            Q(report_title__icontains=q) |
             Q(case__case_number__icontains=q) |
             Q(report_status__icontains=q)
         ).order_by('-created_at')[:10]
+
+    # Evaluate QuerySets into lists (single DB hit each, safe for sliced QS)
+    patients = list(patients)
+    cases    = list(cases)
+    evidence = list(evidence)
+    reports  = list(reports)
 
     total_results = len(patients) + len(cases) + len(evidence) + len(reports)
 

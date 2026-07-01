@@ -53,4 +53,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // ── 6. Profile avatar — now a direct link (no dropdown JS needed) ─────
+    // The avatar button is an <a> tag linking to /accounts/profile/
+    // Dropdown toggle logic removed as avatar navigates directly to profile.
+
 });
