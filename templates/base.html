@@ -41,8 +41,24 @@
             transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
         }
         .profile-avatar-btn:hover {
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.45) !important;
-            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.75), 0 0 14px rgba(59, 130, 246, 0.5) !important;
+            border-color: #60a5fa !important;
+            transform: scale(1.12) !important;
+            color: #ffffff !important;
+        }
+        .profile-avatar-btn:hover .avatar-initials {
+            color: #ffffff !important;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) !important;
+            opacity: 1 !important;
+        }
+        .nav-role-label {
+            font-size: 0.72rem !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.08em !important;
+            text-transform: uppercase !important;
+            color: var(--text-muted) !important;
+            opacity: 0.75 !important;
+            white-space: nowrap !important;
         }
         .user-greeting {
             display: flex !important;
@@ -182,12 +198,8 @@
 
                 <!-- Right: Profile avatar + logout -->
                 <div class="header-user-menu">
-                    <!-- User greeting directly in navbar -->
-                    <div class="user-greeting">
-                        {{ user.get_role_icon }} 
-                        Welcome, {{ user.get_full_name|default:user.username }}
-                        <span class="badge {{ user.get_role_badge }}">{{ user.get_role_display }}</span>
-                    </div>
+                    <!-- Role label only — no welcome text, no icon -->
+                    <span class="nav-role-label">{{ user.get_role_display }}</span>
 
                     <!-- Profile avatar — clicking goes directly to profile page -->
                     <div class="profile-dropdown-wrap" id="profileDropdownWrap">

@@ -9,42 +9,66 @@
 {% block content %}
 <div class="kpi-grid">
     <a href="{% url 'cases:list' %}" class="glass-card kpi-card" id="kpi-total-cases">
-        <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg></div>
+        <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg></div>
         <div class="kpi-info">
             <h3>Total Cases</h3>
             <p>{{ total_cases }}</p>
         </div>
     </a>
     <a href="{% url 'patients:list' %}" class="glass-card kpi-card" id="kpi-total-patients">
-        <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div>
+        <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg></div>
         <div class="kpi-info">
             <h3>Total Patients</h3>
             <p>{{ total_patients }}</p>
         </div>
     </a>
     <a href="{% url 'cases:list' %}" class="glass-card kpi-card" id="kpi-active-cases">
-        <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
+        <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg></div>
         <div class="kpi-info">
             <h3>Active Cases</h3>
             <p>{{ active_cases }}</p>
         </div>
     </a>
     <a href="{% url 'cases:list' %}" class="glass-card kpi-card" id="kpi-critical-cases">
-        <div class="kpi-icon icon-forensic-danger"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg></div>
+        <div class="kpi-icon icon-forensic-danger"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg></div>
         <div class="kpi-info">
             <h3>Critical Cases</h3>
             <p>{{ critical_cases }}</p>
         </div>
     </a>
     <a href="{% url 'evidence:list' %}?status=Pending" class="glass-card kpi-card" id="kpi-pending-evidence">
-        <div class="kpi-icon icon-forensic-alert"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg></div>
+        <div class="kpi-icon icon-forensic-alert"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+            </svg></div>
         <div class="kpi-info">
             <h3>Pending Evidence</h3>
             <p>{{ pending_evidence }}</p>
         </div>
     </a>
     <a href="{% url 'reports:list' %}" class="glass-card kpi-card" id="kpi-pending-reports">
-        <div class="kpi-icon icon-forensic-alert"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
+        <div class="kpi-icon icon-forensic-alert"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg></div>
         <div class="kpi-info">
             <h3>Pending Reports</h3>
             <p>{{ pending_reports }}</p>
@@ -79,7 +103,9 @@
     <div class="card-header">
         <h3 class="card-title" style="color: #ef4444; display: flex; align-items: center; gap: 0.5rem;">
             <span class="pulse-icon">⚠️</span> Overdue Cases (>30 Days)
-            <span class="badge badge-danger" style="margin-left: 0.5rem; background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);">{{ overdue_cases|length }} cases need attention</span>
+            <span class="badge badge-danger"
+                style="margin-left: 0.5rem; background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);">{{
+                overdue_cases|length }} cases need attention</span>
         </h3>
         <a href="{% url 'cases:list' %}?status=InProgress" class="btn-alert">View All Active</a>
     </div>
@@ -97,7 +123,8 @@
             <tbody>
                 {% for case in overdue_cases %}
                 <tr>
-                    <td><a href="{% url 'cases:detail' case.pk %}" style="color: #ef4444; font-weight: bold;">{{ case.case_number }}</a></td>
+                    <td><a href="{% url 'cases:detail' case.pk %}" style="color: #ef4444; font-weight: bold;">{{
+                            case.case_number }}</a></td>
                     <td>{{ case.patient.full_name }}</td>
                     <td>{{ case.doctor.full_name }}</td>
                     <td>{{ case.incident_date|date:"Y-m-d" }}</td>
@@ -115,7 +142,10 @@
     <div class="glass-card mortality-card" style="grid-column: 1 / -1; margin-bottom: 0;">
         <div class="card-header" style="display: flex; align-items: center; gap: 0.75rem;">
             <div class="mortality-header-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
             </div>
             <div>
                 <h3 class="card-title" style="margin-bottom: 2px;">Mortality Breakdown</h3>
@@ -156,7 +186,9 @@
                         <td>{{ case.created_at|date:"Y-m-d" }}</td>
                     </tr>
                     {% empty %}
-                    <tr><td colspan="5" style="text-align: center;">No cases found.</td></tr>
+                    <tr>
+                        <td colspan="5" style="text-align: center;">No cases found.</td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -173,8 +205,8 @@
             <div class="activity-item">
                 <div class="activity-time">{{ log.logged_at|date:"M d, Y H:i" }}</div>
                 <div class="activity-details">
-                    <span class="activity-user">{{ log.username }}</span> 
-                    {{ log.action_type|lower }}d 
+                    <span class="activity-user">{{ log.username }}</span>
+                    {{ log.action_type|lower }}d
                     {% if log.model_name %}{{ log.model_name }} {{ log.record_id }}{% endif %}
                 </div>
             </div>
@@ -194,7 +226,7 @@
 {{ death_data|json_script:"deathData" }}
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
 
@@ -203,15 +235,15 @@
         const mAutopsy = JSON.parse(document.getElementById('monthsAutopsy').textContent);
 
         const trendCtx = document.getElementById('trendChart').getContext('2d');
-        
+
         // Gradient for Clinical (Cyan)
         const clinicalGradient = trendCtx.createLinearGradient(0, 0, 0, 300);
-        clinicalGradient.addColorStop(0, 'rgba(56, 189, 248, 0.5)'); 
-        clinicalGradient.addColorStop(1, 'rgba(56, 189, 248, 0)');   
+        clinicalGradient.addColorStop(0, 'rgba(56, 189, 248, 0.5)');
+        clinicalGradient.addColorStop(1, 'rgba(56, 189, 248, 0)');
 
         // Gradient for Autopsy (Purple)
         const autopsyGradient = trendCtx.createLinearGradient(0, 0, 0, 300);
-        autopsyGradient.addColorStop(0, 'rgba(168, 85, 247, 0.5)'); 
+        autopsyGradient.addColorStop(0, 'rgba(168, 85, 247, 0.5)');
         autopsyGradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
 
         const trendChart = new Chart(trendCtx, {
@@ -257,7 +289,7 @@
                     intersect: false,
                 },
                 plugins: {
-                    legend: { 
+                    legend: {
                         position: 'top',
                         labels: { color: '#94a3b8', usePointStyle: true, padding: 20 }
                     },
@@ -289,7 +321,7 @@
         const tDataRaw = JSON.parse(document.getElementById('typeData').textContent);
         const tLabels = tDataRaw.map(d => d.case_type);
         const tCounts = tDataRaw.map(d => d.count);
-        
+
         const typeChart = new Chart(document.getElementById('typeChart'), {
             type: 'doughnut',
             data: {
@@ -298,7 +330,7 @@
                     data: tCounts,
                     backgroundColor: [
                         'rgba(56, 189, 248, 0.9)',  // Clinical Cyan
-                        'rgba(59, 130, 246, 0.85)', // Deep Blue
+                        'rgba(147, 210, 255, 0.85)', // Light Sky Blue
                         'rgba(99, 102, 241, 0.8)',  // Sleek Indigo
                         'rgba(139, 92, 246, 0.75)', // Muted Purple
                         'rgba(30, 41, 59, 0.7)'     // Slate Gray
