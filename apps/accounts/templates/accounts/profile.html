@@ -13,7 +13,7 @@
             <div class="card-header">
                 <h3 class="card-title">Account Information</h3>
                 <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary btn-sm">
-                    ✏️ Edit Profile
+                    Edit Profile
                 </a>
             </div>
 
@@ -22,7 +22,8 @@
                 <div>
                     <div class="profile-page-name">{{ user.get_full_name|default:user.username }}</div>
                     <div style="color:var(--text-muted);font-size:.9rem;">@{{ user.username }}</div>
-                    <span class="badge {{ user.get_role_badge }}" style="margin-top:.5rem;display:inline-block;">{{ user.get_role_display }}</span>
+                    <span class="badge {{ user.get_role_badge }}" style="margin-top:.5rem;display:inline-block;">{{
+                        user.get_role_display }}</span>
                 </div>
             </div>
 
@@ -48,12 +49,12 @@
                         <td style="color:var(--text-muted);">Account Status</td>
                         <td>
                             {% if user.is_active %}
-                                <span class="badge badge-success">Active</span>
+                            <span class="badge badge-success">Active</span>
                             {% else %}
-                                <span class="badge badge-danger">Inactive</span>
+                            <span class="badge badge-danger">Inactive</span>
                             {% endif %}
                             {% if user.is_locked %}
-                                <span class="badge badge-danger" style="margin-left:.25rem;">Locked</span>
+                            <span class="badge badge-danger" style="margin-left:.25rem;">Locked</span>
                             {% endif %}
                         </td>
                     </tr>
@@ -89,7 +90,8 @@
                         <div class="activity-desc">
                             {% if log.model_name %}{{ log.model_name }}{% endif %}
                             {% if log.record_id %} &mdash; <code>{{ log.record_id }}</code>{% endif %}
-                            {% if log.action_details %}<span style="color:var(--text-muted);font-size:.82rem;"> {{ log.action_details }}</span>{% endif %}
+                            {% if log.action_details %}<span style="color:var(--text-muted);font-size:.82rem;"> {{
+                                log.action_details }}</span>{% endif %}
                         </div>
                         <div class="activity-time">{{ log.logged_at|date:"d M Y, H:i" }}</div>
                     </div>
