@@ -22,8 +22,7 @@
                 <div>
                     <div class="profile-page-name">{{ user.get_full_name|default:user.username }}</div>
                     <div style="color:var(--text-muted);font-size:.9rem;">@{{ user.username }}</div>
-                    <span class="badge {{ user.get_role_badge }}" style="margin-top:.5rem;display:inline-block;">{{
-                        user.get_role_display }}</span>
+                    <span class="badge {{ user.get_role_badge }}" style="margin-top:.5rem;display:inline-block;">{{ user.get_role_display }}</span>
                 </div>
             </div>
 
