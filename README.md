@@ -4,7 +4,7 @@
 
 ---
 
-## ✅ What Every Team Member Needs to Install
+## ✅ What Every Team Member Needs to Install.
 
 Install these **on your own computer** before starting:
 
