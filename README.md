@@ -16,7 +16,7 @@ Install these **on your own computer** before starting:
 
 ---
 
-## 🚀 Setup Guide — Run on Your Own Computer
+## 🚀 Setup Guide — Run on Your Own Computer.
 
 Follow these steps **once** on your machine.
 
