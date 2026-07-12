@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Evidence, LaboratoryTest
+from .models import Evidence, LaboratoryTest, EvidenceChainOfCustody
 
 
 class LabTestInline(admin.TabularInline):
@@ -26,3 +26,12 @@ class LaboratoryTestAdmin(admin.ModelAdmin):
     search_fields = ['test_id', 'evidence__evidence_number']
     ordering      = ['-test_date']
     readonly_fields = ['test_id', 'created_at', 'updated_at']
+
+
+@admin.register(EvidenceChainOfCustody)
+class EvidenceChainOfCustodyAdmin(admin.ModelAdmin):
+    list_display  = ['custody_id', 'evidence', 'action', 'handled_by', 'action_datetime', 'signature_obtained']
+    list_filter   = ['action', 'signature_obtained']
+    search_fields = ['custody_id', 'evidence__evidence_number', 'handled_by']
+    ordering      = ['-action_datetime']
+    readonly_fields = ['custody_id', 'created_at']
