@@ -125,3 +125,57 @@ class LaboratoryTest(models.Model):
     class Meta:
         ordering     = ['-test_date']
         verbose_name = 'Laboratory Test'
+
+
+# ── EvidenceChainOfCustody ────────────────────────────────────────────────────
+class EvidenceChainOfCustody(models.Model):
+    """Tracks every transfer/handling event for a piece of evidence."""
+
+    ACTION_COLLECTED   = 'Collected'
+    ACTION_TRANSFERRED = 'Transferred'
+    ACTION_ANALYSED    = 'Analysed'
+    ACTION_STORED      = 'Stored'
+    ACTION_RETURNED    = 'Returned'
+    ACTION_DISPOSED    = 'Disposed'
+    ACTION_INSPECTED   = 'Inspected'
+
+    ACTION_CHOICES = [
+        (ACTION_COLLECTED,   'Collected'),
+        (ACTION_TRANSFERRED, 'Transferred'),
+        (ACTION_ANALYSED,    'Analysed'),
+        (ACTION_STORED,      'Stored'),
+        (ACTION_RETURNED,    'Returned to Police'),
+        (ACTION_DISPOSED,    'Disposed'),
+        (ACTION_INSPECTED,   'Inspected'),
+    ]
+
+    custody_id       = models.CharField(max_length=15, primary_key=True, editable=False)
+    evidence         = models.ForeignKey(Evidence, on_delete=models.PROTECT, related_name='custody_records')
+    action           = models.CharField(max_length=20, choices=ACTION_CHOICES)
+    handled_by       = models.CharField(max_length=100)
+    handled_by_staff = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True, blank=True,
+                                         related_name='custody_records')
+    from_location    = models.CharField(max_length=200, blank=True)
+    to_location      = models.CharField(max_length=200, blank=True)
+    action_datetime  = models.DateTimeField()
+    purpose          = models.CharField(max_length=300, blank=True)
+    condition_note   = models.CharField(max_length=300, blank=True,
+                                        help_text='Condition of evidence at time of handling')
+    signature_obtained = models.BooleanField(default=False)
+    remarks          = models.TextField(blank=True)
+    created_at       = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.custody_id:
+            count = EvidenceChainOfCustody.objects.count() + 1
+            self.custody_id = f'COC-{count:05d}'
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.custody_id} — {self.evidence.evidence_number} [{self.action}]'
+
+    class Meta:
+        ordering     = ['-action_datetime']
+        verbose_name = 'Evidence Chain of Custody'
+        verbose_name_plural = 'Evidence Chain of Custody Records'
+

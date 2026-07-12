@@ -3,6 +3,50 @@ from apps.cases.models import ForensicCase
 from apps.staff.models import Doctor
 
 
+# ── Mortuary ──────────────────────────────────────────────────────────────────
+class Mortuary(models.Model):
+    """Represents a physical mortuary room/facility in the department."""
+
+    STATUS_AVAILABLE   = 'Available'
+    STATUS_OCCUPIED    = 'Occupied'
+    STATUS_MAINTENANCE = 'Maintenance'
+    STATUS_CLOSED      = 'Closed'
+
+    STATUS_CHOICES = [
+        (STATUS_AVAILABLE,   'Available'),
+        (STATUS_OCCUPIED,    'Occupied'),
+        (STATUS_MAINTENANCE, 'Under Maintenance'),
+        (STATUS_CLOSED,      'Closed'),
+    ]
+
+    mortuary_id      = models.CharField(max_length=15, primary_key=True, editable=False)
+    room_name        = models.CharField(max_length=100)
+    room_number      = models.CharField(max_length=20, unique=True)
+    location         = models.CharField(max_length=200, blank=True)
+    capacity         = models.PositiveSmallIntegerField(default=1, help_text='Max number of bodies')
+    current_occupancy = models.PositiveSmallIntegerField(default=0)
+    refrigeration    = models.BooleanField(default=True)
+    temperature_celsius = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    status           = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_AVAILABLE)
+    notes            = models.TextField(blank=True)
+    created_at       = models.DateTimeField(auto_now_add=True)
+    updated_at       = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.mortuary_id:
+            count = Mortuary.objects.count() + 1
+            self.mortuary_id = f'MRT-{count:04d}'
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.room_name} ({self.room_number}) — {self.status}'
+
+    class Meta:
+        ordering     = ['room_number']
+        verbose_name = 'Mortuary'
+        verbose_name_plural = 'Mortuaries'
+
+
 class Postmortem(models.Model):
     DEATH_NATURAL      = 'Natural'
     DEATH_ACCIDENTAL   = 'Accidental'
