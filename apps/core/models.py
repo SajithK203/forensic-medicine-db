@@ -37,3 +37,46 @@ class ActivityLog(models.Model):
             models.Index(fields=['action_type']),
             models.Index(fields=['model_name']),
         ]
+
+
+# ── Notification ──────────────────────────────────────────────────────────────
+class Notification(models.Model):
+    """System notifications delivered to individual users."""
+
+    TYPE_INFO     = 'Info'
+    TYPE_WARNING  = 'Warning'
+    TYPE_ALERT    = 'Alert'
+    TYPE_SYSTEM   = 'System'
+
+    TYPE_CHOICES = [
+        (TYPE_INFO,    'Information'),
+        (TYPE_WARNING, 'Warning'),
+        (TYPE_ALERT,   'Alert'),
+        (TYPE_SYSTEM,  'System'),
+    ]
+
+    notification_id = models.AutoField(primary_key=True)
+    recipient       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                                        related_name='notifications')
+    notification_type = models.CharField(max_length=10, choices=TYPE_CHOICES, default=TYPE_INFO)
+    title           = models.CharField(max_length=200)
+    message         = models.TextField()
+    related_model   = models.CharField(max_length=50, blank=True,
+                                       help_text='Name of the model this notification relates to')
+    related_id      = models.CharField(max_length=30, blank=True,
+                                       help_text='PK of the related record')
+    is_read         = models.BooleanField(default=False)
+    read_at         = models.DateTimeField(null=True, blank=True)
+    created_at      = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'[{self.notification_type}] {self.title} → {self.recipient.username}'
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes  = [
+            models.Index(fields=['recipient', 'is_read']),
+            models.Index(fields=['created_at']),
+        ]
+        verbose_name = 'Notification'
+

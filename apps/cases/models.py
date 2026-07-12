@@ -94,3 +94,91 @@ class ForensicCase(models.Model):
     class Meta:
         ordering      = ['-created_at']
         verbose_name  = 'Forensic Case'
+
+
+# ── CaseNote ──────────────────────────────────────────────────────────────────
+class CaseNote(models.Model):
+    """Timestamped notes added by staff on a forensic case over time."""
+
+    NOTE_TYPE_GENERAL   = 'General'
+    NOTE_TYPE_MEDICAL   = 'Medical'
+    NOTE_TYPE_LEGAL     = 'Legal'
+    NOTE_TYPE_FOLLOWUP  = 'FollowUp'
+    NOTE_TYPE_INTERNAL  = 'Internal'
+
+    NOTE_TYPE_CHOICES = [
+        (NOTE_TYPE_GENERAL,  'General'),
+        (NOTE_TYPE_MEDICAL,  'Medical'),
+        (NOTE_TYPE_LEGAL,    'Legal'),
+        (NOTE_TYPE_FOLLOWUP, 'Follow-Up'),
+        (NOTE_TYPE_INTERNAL, 'Internal'),
+    ]
+
+    note_id     = models.CharField(max_length=15, primary_key=True, editable=False)
+    case        = models.ForeignKey(ForensicCase, on_delete=models.CASCADE, related_name='notes')
+    author      = models.CharField(max_length=100)
+    note_type   = models.CharField(max_length=20, choices=NOTE_TYPE_CHOICES, default=NOTE_TYPE_GENERAL)
+    note_text   = models.TextField()
+    is_private  = models.BooleanField(default=False, help_text='Private notes are only visible to doctors')
+    created_at  = models.DateTimeField(auto_now_add=True)
+    updated_at  = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.note_id:
+            count = CaseNote.objects.count() + 1
+            self.note_id = f'CN-{count:05d}'
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.note_id} — {self.case.case_number} [{self.note_type}]'
+
+    class Meta:
+        ordering     = ['-created_at']
+        verbose_name = 'Case Note'
+
+
+# ── WitnessStatement ──────────────────────────────────────────────────────────
+class WitnessStatement(models.Model):
+    """Records witness statements collected in relation to a forensic case."""
+
+    STATEMENT_VERBAL  = 'Verbal'
+    STATEMENT_WRITTEN = 'Written'
+    STATEMENT_RECORDED = 'Recorded'
+
+    STATEMENT_TYPE_CHOICES = [
+        (STATEMENT_VERBAL,   'Verbal'),
+        (STATEMENT_WRITTEN,  'Written'),
+        (STATEMENT_RECORDED, 'Audio/Video Recorded'),
+    ]
+
+    statement_id      = models.CharField(max_length=15, primary_key=True, editable=False)
+    case              = models.ForeignKey(ForensicCase, on_delete=models.PROTECT, related_name='witness_statements')
+    witness_name      = models.CharField(max_length=100)
+    witness_nic       = models.CharField(max_length=20, blank=True, verbose_name='NIC / ID Number')
+    witness_contact   = models.CharField(max_length=15, blank=True)
+    witness_address   = models.TextField(blank=True)
+    relationship_to_case = models.CharField(max_length=100, blank=True,
+                                            help_text='e.g. Eyewitness, Relative, Police Officer')
+    statement_type    = models.CharField(max_length=20, choices=STATEMENT_TYPE_CHOICES, default=STATEMENT_WRITTEN)
+    statement_text    = models.TextField()
+    statement_date    = models.DateTimeField()
+    recorded_by       = models.CharField(max_length=100, blank=True)
+    recording_path    = models.CharField(max_length=500, blank=True)
+    is_verified       = models.BooleanField(default=False)
+    verified_by       = models.CharField(max_length=100, blank=True)
+    created_at        = models.DateTimeField(auto_now_add=True)
+    updated_at        = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.statement_id:
+            count = WitnessStatement.objects.count() + 1
+            self.statement_id = f'WS-{count:05d}'
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.statement_id} — {self.witness_name} ({self.case.case_number})'
+
+    class Meta:
+        ordering     = ['-statement_date']
+        verbose_name = 'Witness Statement'
+
