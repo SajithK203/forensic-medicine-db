@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS Patient (
 
     CONSTRAINT pk_Patient           PRIMARY KEY (PatientID),
     CONSTRAINT uq_Patient_NIC       UNIQUE (NICPassport),
-    CONSTRAINT chk_Patient_DOB      CHECK (DateOfBirth IS NULL OR DateOfBirth < CURDATE()),
+    CONSTRAINT chk_Patient_DOB      CHECK (DateOfBirth IS NULL OR DateOfBirth <= '2099-12-31'),
     CONSTRAINT chk_Patient_Age      CHECK (Age IS NULL OR Age BETWEEN 0 AND 150),
 
     INDEX idx_Patient_Name       (FullName),
@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS ForensicCase (
     CONSTRAINT uq_ForensicCase_Number   UNIQUE (CaseNumber),
     CONSTRAINT fk_ForensicCase_Patient  FOREIGN KEY (PatientID) REFERENCES Patient(PatientID)  ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT fk_ForensicCase_Doctor   FOREIGN KEY (DoctorID)  REFERENCES Doctor(DoctorID)    ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT chk_ForensicCase_Date    CHECK (IncidentDate <= CURRENT_TIMESTAMP),
+    CONSTRAINT chk_ForensicCase_Date    CHECK (IncidentDate <= '2099-12-31'),
 
     INDEX idx_FC_PatientID   (PatientID),
     INDEX idx_FC_DoctorID    (DoctorID),
@@ -280,7 +280,7 @@ CREATE TABLE IF NOT EXISTS Evidence (
     CONSTRAINT uq_Evidence_Number       UNIQUE (EvidenceNumber),
     CONSTRAINT uq_Evidence_Barcode      UNIQUE (BarcodeNumber),
     CONSTRAINT fk_Evidence_Case         FOREIGN KEY (CaseID) REFERENCES ForensicCase(CaseID) ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT chk_Evidence_Collection  CHECK (CollectionDate <= CURRENT_TIMESTAMP),
+    CONSTRAINT chk_Evidence_Collection  CHECK (CollectionDate <= '2099-12-31'),
 
     INDEX idx_Ev_CaseID        (CaseID),
     INDEX idx_Ev_Type          (EvidenceType),

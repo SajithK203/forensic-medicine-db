@@ -9,7 +9,7 @@ USE forensic_medicine_db;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ── Staff ────────────────────────────────────────────────────
-INSERT IGNORE INTO apps_staff_staff
+INSERT IGNORE INTO staff_staff
   (staff_id, full_name, staff_type, department, designation, contact_no, email, join_date, is_active, created_at, updated_at)
 VALUES
   ('STF-0001','Dr. Samantha Perera',      'Doctor',        'Forensic Medicine','Head of Forensic Medicine', '0112345001','dr.perera@fmd.lk','2018-01-15',1,NOW(),NOW()),
@@ -24,7 +24,7 @@ VALUES
   ('STF-0010','Sameera Rajapaksa',        'Clerical',      'Administration',   'Office Clerk',              '0112345010','sameera@fmd.lk', '2023-01-10',1,NOW(),NOW());
 
 -- ── Doctors ──────────────────────────────────────────────────
-INSERT IGNORE INTO apps_staff_doctor
+INSERT IGNORE INTO staff_doctor
   (doctor_id, staff_id, full_name, nmc_number, qualification, specialization, jmo_type, license_number, department, office_contact_no, is_active, created_at, updated_at)
 VALUES
   ('DOC-0001','STF-0001','Samantha Perera',     'NMC-2001-001','MBBS, MD (Forensic)','Forensic Pathology', 'Consultant JMO','LIC-001','Forensic Medicine','0112345001',1,NOW(),NOW()),
@@ -34,7 +34,7 @@ VALUES
   ('DOC-0005','STF-0005','Dilani Wickramasinghe','NMC-2008-156','MBBS, DFM',          'Clinical Forensic',  'Junior JMO',    'LIC-005','Forensic Medicine','0112345005',1,NOW(),NOW());
 
 -- ── Patients ─────────────────────────────────────────────────
-INSERT IGNORE INTO apps_patients_patient
+INSERT IGNORE INTO patients_patient
   (patient_id, full_name, nic_passport, date_of_birth, age, gender, address, district, contact_no, civil_status, occupation, notes, registered_at, updated_at)
 VALUES
   ('PAT-0001','Kamal Perera',       '851234567V',   '1985-03-12',40,'Male',  '27 Galle Rd, Colombo 3',      'Colombo',     '0771234001','Married', 'Accountant','',NOW(),NOW()),
