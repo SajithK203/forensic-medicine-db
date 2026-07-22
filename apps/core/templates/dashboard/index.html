@@ -181,8 +181,7 @@
             <tbody>
                 {% for case in overdue_cases %}
                 <tr>
-                    <td><a href="{% url 'cases:detail' case.pk %}" style="color: #ef4444; font-weight: bold;">{{
-                            case.case_number }}</a></td>
+                    <td><a href="{% url 'cases:detail' case.pk %}" style="color: #ef4444; font-weight: bold;">{{ case.case_number }}</a></td>
                     <td>{{ case.patient.full_name }}</td>
                     <td>{{ case.doctor.full_name }}</td>
                     <td>{{ case.incident_date|date:"Y-m-d" }}</td>
@@ -238,7 +237,7 @@
                     {% for case in recent_cases %}
                     <tr>
                         <td><a href="{% url 'cases:detail' case.pk %}">{{ case.case_number }}</a></td>
-                        <td>{% if request.user.is_viewer %}Patient #{{ case.patient.patient_id }}{% else %}{{ case.patient.full_name }}{% endif %}</td>
+                        <td>{{ case.patient.full_name }}</td>
                         <td>{{ case.case_type }}</td>
                         <td><span class="badge {{ case.status_badge }}">{{ case.case_status }}</span></td>
                         <td>{{ case.created_at|date:"Y-m-d" }}</td>

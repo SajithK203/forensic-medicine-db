@@ -224,9 +224,7 @@
     <div class="card-header">
         <h3 class="card-title" style="color: #ef4444; display: flex; align-items: center; gap: 0.5rem;">
             <span class="pulse-icon">⚠️</span> Overdue Cases (>30 Days)
-            <span class="badge badge-danger"
-                style="margin-left: 0.5rem; background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);">{{
-                overdue_cases|length }} cases need attention</span>
+            <span class="badge badge-danger" style="margin-left: 0.5rem; background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);">{{ overdue_cases|length }} cases need attention</span>
         </h3>
         <a href="{% url 'cases:list' %}?status=InProgress" class="btn-alert">View All Active</a>
     </div>
@@ -244,10 +242,8 @@
             <tbody>
                 {% for case in overdue_cases %}
                 <tr>
-                    <td><a href="{% url 'cases:detail' case.pk %}" style="color: #ef4444; font-weight: bold;">{{
-                            case.case_number }}</a></td>
-                    <td>{% if request.user.is_viewer %}Patient #{{ case.patient.patient_id }}{% else %}{{
-                        case.patient.full_name }}{% endif %}</td>
+                    <td><a href="{% url 'cases:detail' case.pk %}" style="color: #ef4444; font-weight: bold;">{{ case.case_number }}</a></td>
+                    <td>{{ case.patient.full_name }}</td>
                     <td>{{ case.doctor.full_name }}</td>
                     <td>{{ case.incident_date|date:"Y-m-d" }}</td>
                     <td><span class="badge {{ case.status_badge }}">{{ case.case_status }}</span></td>
@@ -302,8 +298,7 @@
                     {% for case in recent_cases %}
                     <tr>
                         <td><a href="{% url 'cases:detail' case.pk %}">{{ case.case_number }}</a></td>
-                        <td>{% if request.user.is_viewer %}Patient #{{ case.patient.patient_id }}{% else %}{{
-                            case.patient.full_name }}{% endif %}</td>
+                        <td>{{ case.patient.full_name }}</td>
                         <td>{{ case.case_type }}</td>
                         <td><span class="badge {{ case.status_badge }}">{{ case.case_status }}</span></td>
                         <td>{{ case.created_at|date:"Y-m-d" }}</td>
