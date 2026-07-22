@@ -6,7 +6,7 @@
   <p>
     <b>Designed & Developed by Group 22</b><br>
     Department of Computer Engineering • Faculty of Engineering • University of Peradeniya<br>
-    Course: CO2050 Database Systems • Lecturer: Mr. Biswajith • Date: 23 July 2026
+    Course: CO2050 Database Systems • Lecturer: Mr. Biswajith Dissanayake • Date: 23 July 2026
   </p>
 
   <p>
@@ -68,8 +68,8 @@
 | Name | Registration Number | Primary Role & Contributions |
 |---|---|---|
 | **R.M.S.S. Kumara** | `E/22/203` | Team Lead / Django Backend / Database Integration |
-| **A.W.H. Panchani** | `E/22/269` | Database Architect / Schema (DDL) / Views & Procedures |
-| **K.D. Ashen** | `E/22/032` | Frontend Engineer / HTML5 & CSS3 UI / Chart.js Dashboard |
+| **K.D. Ashen** | `E/22/032` | Database Architect / Schema (DDL) / Views & Procedures |
+| **A.W.H. Panchani** | `E/22/269` | Frontend Engineer / HTML5 & CSS3 UI / Chart.js Dashboard |
 | **W.A.N. Gunathilaka** | `E/22/121` | Quality Assurance / SQL Queries / Triggers / Documentation |
 
 ---
