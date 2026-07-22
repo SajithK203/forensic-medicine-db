@@ -76,10 +76,11 @@
 
 ## 🔐 Pre-Seeded Demo Login Credentials
 
-Use these test accounts to evaluate the system's **Role-Based Access Control (RBAC)** mechanisms:
+Use these test accounts to evaluate the system's **Role-Based Access Control (RBAC)** mechanisms and Django Admin Portal:
 
 | Role | Username | Password | User Full Name | Access Scope & Permissions |
 |---|---|---|---|---|
+| ⚡ **Django Superuser** | `superuser` | `Superuser@123` | Django Superuser | Full Django Admin portal root access |
 | 👑 **Administrator** | `admin` | `Admin@123` | System Admin | Full system control, user accounts, audit trail logs |
 | 🩺 **Consultant JMO** | `dr_perera` | `Doctor@123` | Dr. Samantha Perera | Case management, clinical exams, postmortem autopsies |
 | 🩺 **Senior JMO** | `dr_silva` | `Doctor@123` | Dr. Nimal Silva | Examination entries, court report generation |
