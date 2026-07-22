@@ -1,5 +1,14 @@
 from django.contrib import admin
-from .models import Postmortem
+from .models import Postmortem, Mortuary
+
+
+@admin.register(Mortuary)
+class MortuaryAdmin(admin.ModelAdmin):
+    list_display  = ['mortuary_id', 'room_name', 'room_number', 'capacity', 'current_occupancy', 'status']
+    list_filter   = ['status', 'refrigeration']
+    search_fields = ['mortuary_id', 'room_name', 'room_number']
+    ordering      = ['room_number']
+    readonly_fields = ['mortuary_id', 'created_at', 'updated_at']
 
 
 @admin.register(Postmortem)

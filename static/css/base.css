@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
 
 :root {
     /* Colors */
@@ -38,7 +38,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Source Sans 3', sans-serif;
     background-color: var(--bg-dark);
     color: var(--text-main);
     min-height: 100vh;
@@ -79,10 +79,11 @@ a:hover {
 /* Header */
 .top-header {
     height: var(--header-height);
-    background: var(--bg-panel);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-bottom: 1px solid var(--border-glass);
+    background: linear-gradient(90deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -91,7 +92,7 @@ a:hover {
     top: 0;
     z-index: 40;
     gap: 1rem;
-    overflow: visible; /* allow dropdown to overflow below */
+    overflow: visible;
 }
 
 /* Left: page title — fixed width, no shrink */
@@ -124,23 +125,40 @@ a:hover {
     white-space: nowrap;
 }
 
+/* Professional role indicator — no pill, no border */
+.nav-role-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 0.75;
+    white-space: nowrap;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
 .btn-logout {
-    background: rgba(239, 68, 68, 0.1);
+    background: transparent;
     color: var(--danger);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    padding: 0.4rem 0.85rem;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    padding: 0.45rem 1rem;
     border-radius: 8px;
-    font-size: 0.82rem;
-    font-weight: 500;
+    font-size: 0.85rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: all 0.3s ease;
     white-space: nowrap;
     line-height: 1;
 }
 
 .btn-logout:hover {
-    background: var(--danger);
-    color: white;
+    background: #ef4444;
+    border-color: #ef4444;
+    box-shadow: 0 0 18px rgba(239, 68, 68, 0.45);
+    color: #ffffff;
+    transform: translateY(-1px);
 }
 
 /* Content Area */
@@ -271,7 +289,7 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
     letter-spacing: 0.5px;
     line-height: 1;
     padding: 0;
@@ -281,8 +299,17 @@ a:hover {
 
 .profile-avatar-btn:hover,
 .profile-avatar-btn.open {
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35);
-    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.75), 0 0 14px rgba(59, 130, 246, 0.5);
+    border-color: #60a5fa;
+    transform: scale(1.12);
+    color: #ffffff;
+}
+
+.profile-avatar-btn:hover .avatar-initials,
+.profile-avatar-btn.open .avatar-initials {
+    color: #ffffff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    opacity: 1;
 }
 
 .avatar-initials {
