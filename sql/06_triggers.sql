@@ -48,15 +48,18 @@ BEGIN
     -- Only fire when the case_status column actually changes
     IF OLD.case_status <> NEW.case_status THEN
         INSERT INTO core_activitylog (
+            user_id,
             username,
             action_type,
             model_name,
             record_id,
             action_details,
             ip_address,
+            user_agent,
             logged_at
         )
         VALUES (
+            (SELECT id FROM accounts_customuser ORDER BY id ASC LIMIT 1),
             'SYSTEM_TRIGGER',
             'UPDATE',
             'ForensicCase',
@@ -67,6 +70,7 @@ BEGIN
                 '] to [', NEW.case_status, ']'
             ),
             '127.0.0.1',
+            'MySQL Trigger',
             NOW()
         );
     END IF;
@@ -152,15 +156,18 @@ FOR EACH ROW
 BEGIN
     IF OLD.report_status <> 'Submitted' AND NEW.report_status = 'Submitted' THEN
         INSERT INTO core_activitylog (
+            user_id,
             username,
             action_type,
             model_name,
             record_id,
             action_details,
             ip_address,
+            user_agent,
             logged_at
         )
         VALUES (
+            (SELECT id FROM accounts_customuser ORDER BY id ASC LIMIT 1),
             'SYSTEM_TRIGGER',
             'UPDATE',
             'CourtReport',
@@ -171,6 +178,7 @@ BEGIN
                 '] submitted to [', NEW.court_name, '] at ', NOW()
             ),
             '127.0.0.1',
+            'MySQL Trigger',
             NOW()
         );
     END IF;

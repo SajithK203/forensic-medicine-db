@@ -102,11 +102,14 @@ def case_update_status(request, pk):
     case = get_object_or_404(ForensicCase, pk=pk)
     form = CaseStatusForm(request.POST or None, instance=case)
     if request.method == 'POST' and form.is_valid():
-        form.save()
-        log_action(request.user, 'UPDATE', 'ForensicCase', pk,
-                   f'Status changed to {case.case_status}', request)
-        messages.success(request, f'Case status updated to {case.case_status}.')
-        return redirect('cases:detail', pk=pk)
+        try:
+            form.save()
+            log_action(request.user, 'UPDATE', 'ForensicCase', pk,
+                       f'Status changed to {case.case_status}', request)
+            messages.success(request, f'Case status updated to {case.case_status}.')
+            return redirect('cases:detail', pk=pk)
+        except Exception as e:
+            messages.error(request, f'Failed to update case status: {str(e)}')
     return render(request, 'cases/form.html', {
         'form':       form,
         'case':       case,
