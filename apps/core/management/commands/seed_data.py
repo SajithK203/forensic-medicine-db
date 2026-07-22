@@ -104,13 +104,13 @@ class Command(BaseCommand):
 
         # ── 5. Forensic Cases ────────────────────────────────────────────────
         case_data = [
-            (patient_objs[0], doctor_objs[0], 'Clinical Forensic',  now - timedelta(days=5),   'Colombo',        'Assault',          'B/COL/3456/2026', '',              'InProgress', 'High'),
+            (patient_objs[0], doctor_objs[0], 'Clinical Forensic',  now - timedelta(days=35),  'Colombo',        'Assault',          'B/COL/3456/2026', '',              'InProgress', 'High'),
             (patient_objs[1], doctor_objs[1], 'Clinical Forensic',  now - timedelta(days=10),  'Gampaha',        'Road Accident',     'B/GAM/1234/2026', '',              'Completed',  'Medium'),
             (patient_objs[2], doctor_objs[0], 'Autopsy',            now - timedelta(days=3),   'Kandy Mortuary', 'Suspicious Death',  'B/KDY/0789/2026', 'HC/KDY/12/26', 'InProgress', 'Critical'),
             (patient_objs[3], doctor_objs[2], 'Clinical & Autopsy', now - timedelta(days=15),  'Galle',          'Drowning',          'B/GAL/2345/2026', '',              'Completed',  'High'),
             (patient_objs[4], doctor_objs[3], 'Autopsy',            now - timedelta(days=20),  'Kandy',          'Sudden Death',      'B/KDY/0345/2026', 'MC/KDY/08/26', 'Closed',     'Medium'),
             (patient_objs[5], doctor_objs[1], 'Clinical Forensic',  now - timedelta(days=2),   'Nuwara Eliya',   'Domestic Violence', 'B/NE/0456/2026',  '',              'Pending',    'High'),
-            (patient_objs[6], doctor_objs[4], 'Autopsy',            now - timedelta(days=7),   'Hambantota',     'Found Dead',        'B/HAM/1890/2026', 'MC/HAM/05/26', 'InProgress', 'Medium'),
+            (patient_objs[6], doctor_objs[4], 'Autopsy',            now - timedelta(days=42),  'Hambantota',     'Found Dead',        'B/HAM/1890/2026', 'MC/HAM/05/26', 'InProgress', 'Medium'),
             (patient_objs[7], doctor_objs[0], 'Clinical Forensic',  now - timedelta(days=12),  'Jaffna',         'Sexual Assault',    'B/JAF/0234/2026', 'HC/JAF/22/26', 'Submitted',  'Critical'),
             (patient_objs[8], doctor_objs[2], 'Clinical Forensic',  now - timedelta(days=30),  'Kurunegala',     'Workplace Injury',  'B/KUR/0567/2026', '',              'Completed',  'Low'),
             (patient_objs[9], doctor_objs[3], 'Clinical & Autopsy', now - timedelta(days=45),  'Ratnapura',      'Poisoning',         'B/RAT/0123/2026', 'HC/RAT/18/26', 'Closed',     'High'),
