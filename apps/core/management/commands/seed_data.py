@@ -127,6 +127,9 @@ class Command(BaseCommand):
                 c.save()
                 case_objs.append(c)
             else:
+                existing.incident_date = idate
+                existing.case_status = status
+                existing.save()
                 case_objs.append(existing)
         self.stdout.write(f'  [+] Cases  ({len(case_objs)} records)')
 
