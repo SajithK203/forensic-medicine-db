@@ -90,6 +90,34 @@ def dashboard(request):
     # ── Recent activity log ───────────────────────────────────────────────────
     recent_logs = ActivityLog.objects.select_related('user').order_by('-logged_at')[:15]
 
+    # ── Role-specific context extensions ──────────────────────────────────────
+    user = request.user
+    my_assigned_cases = []
+    my_pending_autopsies_count = 0
+    my_pending_reports_count = 0
+    lab_pending_tests_count = 0
+    lab_evidence_queue = []
+    locked_users_count = 0
+
+    if getattr(user, 'is_doctor', False):
+        my_assigned_cases = (
+            ForensicCase.objects
+            .filter(doctor__staff__email=user.email)
+            .exclude(case_status__in=['Closed', 'Archived'])
+            .select_related('patient', 'doctor')
+            .order_by('-incident_date')[:5]
+        )
+        my_pending_autopsies_count = Postmortem.objects.filter(doctor__staff__email=user.email, report_status='Pending').count()
+        my_pending_reports_count = CourtReport.objects.filter(doctor__staff__email=user.email, report_status__in=['Draft', 'Generated']).count()
+
+    elif getattr(user, 'is_lab_tech', False):
+        lab_pending_tests_count = Evidence.objects.filter(analysis_status='Pending').count()
+        lab_evidence_queue = Evidence.objects.filter(analysis_status='Pending').select_related('case').order_by('-collection_date')[:5]
+
+    elif getattr(user, 'is_administrator', False):
+        from apps.accounts.models import CustomUser
+        locked_users_count = CustomUser.objects.filter(is_locked=True).count()
+
     if request.GET.get('ajax') == '1':
         return JsonResponse({
             'kpis': {
@@ -118,23 +146,29 @@ def dashboard(request):
         })
 
     context = {
-        'total_cases':       total_cases,
-        'active_cases':      active_cases,
-        'critical_cases':    critical_cases,
-        'total_patients':    total_patients,
-        'pending_reports':   pending_reports,
-        'pending_evidence':  pending_evidence,
-        'recent_cases':      recent_cases,
-        'overdue_cases':     overdue_cases,
-        'recent_logs':       recent_logs,
+        'total_cases':                total_cases,
+        'active_cases':               active_cases,
+        'critical_cases':             critical_cases,
+        'total_patients':             total_patients,
+        'pending_reports':            pending_reports,
+        'pending_evidence':           pending_evidence,
+        'recent_cases':               recent_cases,
+        'overdue_cases':              overdue_cases,
+        'recent_logs':                recent_logs,
+        'my_assigned_cases':          my_assigned_cases,
+        'my_pending_autopsies_count': my_pending_autopsies_count,
+        'my_pending_reports_count':   my_pending_reports_count,
+        'lab_pending_tests_count':    lab_pending_tests_count,
+        'lab_evidence_queue':         lab_evidence_queue,
+        'locked_users_count':         locked_users_count,
         # Chart data (as Python lists — serialised in template)
-        'months_labels':     months_labels,
-        'months_clinical':   months_clinical,
-        'months_autopsy':    months_autopsy,
-        'type_data':         list(type_data),
-        'death_data':        list(death_data),
-        'page_title':        'Dashboard',
-        'active_nav':        'dashboard',
+        'months_labels':              months_labels,
+        'months_clinical':            months_clinical,
+        'months_autopsy':             months_autopsy,
+        'type_data':                  list(type_data),
+        'death_data':                 list(death_data),
+        'page_title':                 'Dashboard',
+        'active_nav':                 'dashboard',
     }
     return render(request, 'dashboard/index.html', context)
 

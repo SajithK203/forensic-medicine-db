@@ -33,7 +33,7 @@ def login_view(request):
             user.save(update_fields=['login_attempts', 'last_login_ip', 'last_login'])
             login(request, user)
             log_action(user, 'LOGIN', details=f'Login from {user.last_login_ip}', request=request)
-            messages.success(request, f'Welcome back, {user.get_full_name() or user.username}!')
+            messages.success(request, f'Welcome back, {user.get_full_name() or user.username}! Signed in as {user.get_role_display()}.')
             return redirect(request.GET.get('next', 'core:dashboard'))
 
     return render(request, 'accounts/login.html', {

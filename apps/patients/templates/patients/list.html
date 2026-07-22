@@ -43,8 +43,8 @@
                 {% for patient in page_obj %}
                 <tr>
                     <td>{{ patient.patient_id }}</td>
-                    <td><strong>{{ patient.full_name }}</strong></td>
-                    <td>{{ patient.nic_passport }}</td>
+                    <td><strong>{% if user.is_viewer %}Patient {{ patient.patient_id }}{% else %}{{ patient.full_name }}{% endif %}</strong></td>
+                    <td>{% if user.is_viewer %}Protected{% else %}{{ patient.nic_passport }}{% endif %}</td>
                     <td>{{ patient.gender }}</td>
                     <td>{{ patient.district }}</td>
                     <td><span class="badge badge-secondary">{{ patient.total_cases }}</span></td>

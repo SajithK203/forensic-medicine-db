@@ -32,7 +32,7 @@
         <div class="info-list">
             <div class="info-item">
                 <div class="info-label">NIC / Passport</div>
-                <div class="info-value">{{ patient.nic_passport }}</div>
+                <div class="info-value">{% if user.is_viewer %}<span style="color: var(--text-muted); font-style: italic;">Protected (Restricted)</span>{% else %}{{ patient.nic_passport }}{% endif %}</div>
             </div>
             <div class="info-item">
                 <div class="info-label">Gender & Age</div>
@@ -40,7 +40,7 @@
             </div>
             <div class="info-item">
                 <div class="info-label">Contact No.</div>
-                <div class="info-value">{{ patient.contact_no|default:"N/A" }}</div>
+                <div class="info-value">{% if user.is_viewer %}<span style="color: var(--text-muted); font-style: italic;">Protected (Restricted)</span>{% else %}{{ patient.contact_no|default:"N/A" }}{% endif %}</div>
             </div>
             <div class="info-item">
                 <div class="info-label">District</div>
@@ -48,11 +48,11 @@
             </div>
             <div class="info-item">
                 <div class="info-label">Address</div>
-                <div class="info-value">{{ patient.address|default:"N/A" }}</div>
+                <div class="info-value">{% if user.is_viewer %}<span style="color: var(--text-muted); font-style: italic;">Protected (Restricted)</span>{% else %}{{ patient.address|default:"N/A" }}{% endif %}</div>
             </div>
             <div class="info-item">
                 <div class="info-label">Emergency Contact</div>
-                <div class="info-value">{{ patient.emergency_contact_name|default:"N/A" }} <br> {{ patient.emergency_contact_no|default:"" }}</div>
+                <div class="info-value">{% if user.is_viewer %}<span style="color: var(--text-muted); font-style: italic;">Protected (Restricted)</span>{% else %}{{ patient.emergency_contact_name|default:"N/A" }} <br> {{ patient.emergency_contact_no|default:"" }}{% endif %}</div>
             </div>
         </div>
     </div>

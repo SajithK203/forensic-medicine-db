@@ -8,72 +8,130 @@
 
 {% block content %}
 <div class="kpi-grid">
-    <a href="{% url 'cases:list' %}" class="glass-card kpi-card" id="kpi-total-cases">
-        <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-            </svg></div>
-        <div class="kpi-info">
-            <h3>Total Cases</h3>
-            <p>{{ total_cases }}</p>
-        </div>
-    </a>
-    <a href="{% url 'patients:list' %}" class="glass-card kpi-card" id="kpi-total-patients">
-        <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg></div>
-        <div class="kpi-info">
-            <h3>Total Patients</h3>
-            <p>{{ total_patients }}</p>
-        </div>
-    </a>
-    <a href="{% url 'cases:list' %}" class="glass-card kpi-card" id="kpi-active-cases">
-        <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg></div>
-        <div class="kpi-info">
-            <h3>Active Cases</h3>
-            <p>{{ active_cases }}</p>
-        </div>
-    </a>
-    <a href="{% url 'cases:list' %}" class="glass-card kpi-card" id="kpi-critical-cases">
-        <div class="kpi-icon icon-forensic-danger"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg></div>
-        <div class="kpi-info">
-            <h3>Critical Cases</h3>
-            <p>{{ critical_cases }}</p>
-        </div>
-    </a>
-    <a href="{% url 'evidence:list' %}?status=Pending" class="glass-card kpi-card" id="kpi-pending-evidence">
-        <div class="kpi-icon icon-forensic-alert"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-            </svg></div>
-        <div class="kpi-info">
-            <h3>Pending Evidence</h3>
-            <p>{{ pending_evidence }}</p>
-        </div>
-    </a>
-    <a href="{% url 'reports:list' %}" class="glass-card kpi-card" id="kpi-pending-reports">
-        <div class="kpi-icon icon-forensic-alert"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg></div>
-        <div class="kpi-info">
-            <h3>Pending Reports</h3>
-            <p>{{ pending_reports }}</p>
-        </div>
-    </a>
+    {% if request.user.is_doctor %}
+        <!-- Doctor Specific KPIs -->
+        <a href="{% url 'cases:list' %}" class="glass-card kpi-card">
+            <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 01-2-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
+            <div class="kpi-info">
+                <h3>My Active Cases</h3>
+                <p>{{ my_assigned_cases|length }}</p>
+            </div>
+        </a>
+        <a href="{% url 'reports:list' %}" class="glass-card kpi-card">
+            <div class="kpi-icon icon-forensic-alert"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
+            <div class="kpi-info">
+                <h3>My Pending Reports</h3>
+                <p>{{ my_pending_reports_count }}</p>
+            </div>
+        </a>
+        <a href="{% url 'postmortem:list' %}" class="glass-card kpi-card">
+            <div class="kpi-icon icon-forensic-danger"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Pending Autopsies</h3>
+                <p>{{ my_pending_autopsies_count }}</p>
+            </div>
+        </a>
+        <a href="{% url 'cases:list' %}" class="glass-card kpi-card">
+            <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Department Cases</h3>
+                <p>{{ total_cases }}</p>
+            </div>
+        </a>
+
+    {% elif request.user.is_lab_tech %}
+        <!-- Lab Technician Specific KPIs -->
+        <a href="{% url 'evidence:list' %}?status=Pending" class="glass-card kpi-card">
+            <div class="kpi-icon icon-forensic-alert"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Pending Evidence</h3>
+                <p>{{ pending_evidence }}</p>
+            </div>
+        </a>
+        <a href="{% url 'evidence:list' %}" class="glass-card kpi-card">
+            <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg></div>
+            <div class="kpi-info">
+                <h3>Pending Lab Tests</h3>
+                <p>{{ lab_pending_tests_count }}</p>
+            </div>
+        </a>
+        <a href="{% url 'cases:list' %}" class="glass-card kpi-card">
+            <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 01-2-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Active Department Cases</h3>
+                <p>{{ active_cases }}</p>
+            </div>
+        </a>
+
+    {% elif request.user.is_administrator %}
+        <!-- Administrator Full 6 System KPIs -->
+        <a href="{% url 'cases:list' %}" class="glass-card kpi-card" id="kpi-total-cases">
+            <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Total Cases</h3>
+                <p>{{ total_cases }}</p>
+            </div>
+        </a>
+        <a href="{% url 'patients:list' %}" class="glass-card kpi-card" id="kpi-total-patients">
+            <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Total Patients</h3>
+                <p>{{ total_patients }}</p>
+            </div>
+        </a>
+        <a href="{% url 'cases:list' %}" class="glass-card kpi-card" id="kpi-active-cases">
+            <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 01-2-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Active Cases</h3>
+                <p>{{ active_cases }}</p>
+            </div>
+        </a>
+        <a href="{% url 'cases:list' %}" class="glass-card kpi-card" id="kpi-critical-cases">
+            <div class="kpi-icon icon-forensic-danger"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Critical Cases</h3>
+                <p>{{ critical_cases }}</p>
+            </div>
+        </a>
+        <a href="{% url 'evidence:list' %}?status=Pending" class="glass-card kpi-card" id="kpi-pending-evidence">
+            <div class="kpi-icon icon-forensic-alert"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Pending Evidence</h3>
+                <p>{{ pending_evidence }}</p>
+            </div>
+        </a>
+        <a href="{% url 'reports:list' %}" class="glass-card kpi-card" id="kpi-pending-reports">
+            <div class="kpi-icon icon-forensic-alert"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 01-2-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Pending Reports</h3>
+                <p>{{ pending_reports }}</p>
+            </div>
+        </a>
+
+    {% else %}
+        <!-- Viewer Specific High-Level KPIs (Anonymized) -->
+        <a href="{% url 'cases:list' %}" class="glass-card kpi-card">
+            <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Total Department Cases</h3>
+                <p>{{ total_cases }}</p>
+            </div>
+        </a>
+        <a href="{% url 'cases:list' %}" class="glass-card kpi-card">
+            <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 01-2-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Active Cases</h3>
+                <p>{{ active_cases }}</p>
+            </div>
+        </a>
+        <a href="{% url 'patients:list' %}" class="glass-card kpi-card">
+            <div class="kpi-icon icon-forensic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div>
+            <div class="kpi-info">
+                <h3>Total Patients Recorded</h3>
+                <p>{{ total_patients }}</p>
+            </div>
+        </a>
+    {% endif %}
 </div>
 
 <div class="dashboard-grid">
@@ -160,7 +218,7 @@
 
 <div class="dashboard-grid" style="margin-top: 1.5rem;">
     <!-- Recent Cases Table -->
-    <div class="glass-card">
+    <div class="glass-card" {% if not request.user.is_administrator %}style="grid-column: 1 / -1;"{% endif %}>
         <div class="card-header">
             <h3 class="card-title">Recent Cases</h3>
             <a href="{% url 'cases:list' %}" class="btn btn-secondary btn-sm">View All</a>
@@ -180,7 +238,7 @@
                     {% for case in recent_cases %}
                     <tr>
                         <td><a href="{% url 'cases:detail' case.pk %}">{{ case.case_number }}</a></td>
-                        <td>{{ case.patient.full_name }}</td>
+                        <td>{% if request.user.is_viewer %}Patient #{{ case.patient.patient_id }}{% else %}{{ case.patient.full_name }}{% endif %}</td>
                         <td>{{ case.case_type }}</td>
                         <td><span class="badge {{ case.status_badge }}">{{ case.case_status }}</span></td>
                         <td>{{ case.created_at|date:"Y-m-d" }}</td>
@@ -195,6 +253,7 @@
         </div>
     </div>
 
+    {% if request.user.is_administrator %}
     <!-- Activity Log -->
     <div class="glass-card">
         <div class="card-header">
@@ -215,6 +274,7 @@
             {% endfor %}
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
 
@@ -226,7 +286,21 @@
 {{ death_data|json_script:"deathData" }}
 
 <script>
+    function dismissWelcomeBanner() {
+        var banner = document.getElementById('welcome-toast-banner');
+        if (banner) {
+            banner.style.opacity = '0';
+            banner.style.transform = 'translateY(-10px)';
+            setTimeout(function() {
+                banner.style.display = 'none';
+            }, 500);
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
+        // Auto-dismiss welcome banner smoothly after 4 seconds
+        setTimeout(dismissWelcomeBanner, 4000);
+
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
 
