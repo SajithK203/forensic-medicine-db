@@ -83,17 +83,16 @@
             {% if recent_activity %}
             <div class="activity-list">
                 {% for log in recent_activity %}
-                <div class="activity-item">
-                    <div class="activity-action-badge">{{ log.action_type }}</div>
-                    <div class="activity-details">
-                        <div class="activity-desc">
-                            {% if log.model_name %}{{ log.model_name }}{% endif %}
-                            {% if log.record_id %} &mdash; <code>{{ log.record_id }}</code>{% endif %}
-                            {% if log.action_details %}<span style="color:var(--text-muted);font-size:.82rem;"> {{
-                                log.action_details }}</span>{% endif %}
-                        </div>
-                        <div class="activity-time">{{ log.logged_at|date:"d M Y, H:i" }}</div>
+                <div class="activity-item" style="padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                        <span class="badge badge-secondary" style="font-size: 0.7rem;">{{ log.action_type }}</span>
+                        {% if log.model_name %}<strong style="color: #f8fafc; font-size: 0.85rem;">{{ log.model_name }}</strong>{% endif %}
+                        {% if log.record_id %}<span style="color: #38bdf8; font-size: 0.85rem; font-weight: 600;">#{{ log.record_id }}</span>{% endif %}
                     </div>
+                    {% if log.action_details %}
+                    <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.2rem;">{{ log.action_details }}</div>
+                    {% endif %}
+                    <div class="activity-time" style="font-size: 0.75rem; color: #64748b;">{{ log.logged_at|date:"d M Y, H:i" }}</div>
                 </div>
                 {% endfor %}
             </div>
