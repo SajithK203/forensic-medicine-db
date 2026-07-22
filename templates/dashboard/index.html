@@ -253,12 +253,24 @@
         </div>
         <div class="activity-list">
             {% for log in recent_logs %}
-            <div class="activity-item">
-                <div class="activity-time">{{ log.logged_at|date:"M d, Y H:i" }}</div>
-                <div class="activity-details">
-                    <span class="activity-user">{{ log.username }}</span> 
-                    {{ log.action_type|lower }}d 
-                    {% if log.model_name %}{{ log.model_name }} {{ log.record_id }}{% endif %}
+            <div class="activity-item" style="padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                <div class="activity-time" style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.2rem;">{{ log.logged_at|date:"d M Y, H:i" }}</div>
+                <div class="activity-details" style="font-size: 0.85rem; color: #f8fafc; line-height: 1.4;">
+                    <strong class="activity-user" style="color: #38bdf8;">{{ log.username }}</strong>
+                    {% if log.user %}
+                        <span class="badge {{ log.user.get_role_badge }}" style="font-size: 0.7rem; padding: 0.15rem 0.45rem; margin-left: 0.25rem;">
+                            {{ log.user.get_role_icon }} {{ log.user.get_role_display }}
+                        </span>
+                    {% endif %}
+                    <span class="badge badge-secondary" style="font-size: 0.7rem; padding: 0.15rem 0.45rem; margin-left: 0.25rem; background: rgba(148, 163, 184, 0.15); border: 1px solid rgba(148, 163, 184, 0.3);">
+                        {{ log.action_type }}
+                    </span>
+                    {% if log.model_name %}
+                        <span style="color: #cbd5e1; margin-left: 0.25rem;">{{ log.model_name }} <strong>#{{ log.record_id }}</strong></span>
+                    {% endif %}
+                    {% if log.action_details %}
+                        <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.15rem;">{{ log.action_details }}</div>
+                    {% endif %}
                 </div>
             </div>
             {% empty %}
