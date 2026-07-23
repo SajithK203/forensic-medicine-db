@@ -80,12 +80,12 @@ Use these test accounts to evaluate the system's **Role-Based Access Control (RB
 
 | Role | Username | Password | User Full Name | Access Scope & Permissions |
 |---|---|---|---|---|
-| 👑 **Administrator** | `admin` | `Admin@123` | System Admin | Full system control, user accounts, audit trail logs |
-| 🩺 **Consultant JMO** | `dr_perera` | `Doctor@123` | Dr. Samantha Perera | Case management, clinical exams, postmortem autopsies |
-| 🩺 **Senior JMO** | `dr_silva` | `Doctor@123` | Dr. Nimal Silva | Examination entries, court report generation |
-| 🧪 **Lab Technician** | `lab_tech` | `Lab@123` | Nuwan Karunaratne | Physical evidence tracking, lab test processing, custody log |
-| 👁️ **Viewer** | `viewer` | `View@123` | Saman Dissanayake | Read-only departmental record access |
-| ⚡ **Django Superuser** | `superuser` | `Superuser@123` | Django Superuser | Full Django Admin portal root access |
+| 👑 **Administrator** | `admin` | `` | System Admin | Full system control, user accounts, audit trail logs |
+| 🩺 **Consultant JMO** | `dr_perera` | `` | Dr. Samantha Perera | Case management, clinical exams, postmortem autopsies |
+| 🩺 **Senior JMO** | `dr_silva` | `` | Dr. Nimal Silva | Examination entries, court report generation |
+| 🧪 **Lab Technician** | `lab_tech` | `` | Nuwan Karunaratne | Physical evidence tracking, lab test processing, custody log |
+| 👁️ **Viewer** | `viewer` | `` | Saman Dissanayake | Read-only departmental record access |
+| ⚡ **Django Superuser** | `superuser` | `` | Django Superuser | Full Django Admin portal root access |
 
 ---
 
