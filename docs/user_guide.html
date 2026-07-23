@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>user_guide</title>
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #333333;
+        line-height: 1.6;
+        padding: 40px;
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: #ffffff;
+    }
+    h1 {
+        font-size: 2.2em;
+        border-bottom: 2px solid #eaecef;
+        padding-bottom: 0.3em;
+        color: #111111;
+        margin-top: 1.5em;
+    }
+    h2 {
+        font-size: 1.6em;
+        border-bottom: 1px solid #eaecef;
+        padding-bottom: 0.3em;
+        color: #222222;
+        margin-top: 1.4em;
+    }
+    h3 {
+        font-size: 1.25em;
+        color: #333333;
+        margin-top: 1.3em;
+    }
+    p {
+        margin-top: 0;
+        margin-bottom: 16px;
+    }
+    code {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        background-color: rgba(27,31,35,0.05);
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-size: 85%;
+    }
+    pre {
+        background-color: #f6f8fa;
+        padding: 16px;
+        border-radius: 6px;
+        overflow: auto;
+        font-size: 85%;
+        line-height: 1.45;
+        border: 1px solid #e1e4e6;
+    }
+    pre code {
+        background-color: transparent;
+        padding: 0;
+        border-radius: 0;
+        font-size: 100%;
+    }
+    ul, ol {
+        margin-top: 0;
+        margin-bottom: 16px;
+        padding-left: 2em;
+    }
+    li {
+        margin-bottom: 4px;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    th, td {
+        border: 1px solid #dfe2e5;
+        padding: 8px 12px;
+        text-align: left;
+    }
+    th {
+        background-color: #f6f8fa;
+        font-weight: bold;
+    }
+    tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+    blockquote {
+        border-left: 0.25em solid #dfe2e5;
+        color: #6a737d;
+        padding: 0 1em;
+        margin: 0 0 16px 0;
+    }
+    hr {
+        height: 0.25em;
+        padding: 0;
+        margin: 24px 0;
+        background-color: #e1e4e6;
+        border: 0;
+    }
+</style>
+</head>
+<body>
+<h1>User Guide</h1>
+<h2>ForensiDB — Forensic Medicine Department Database System</h2>
+<h3>Group 22 | University of Peradeniya | CO2050 Database Systems</h3>
+<h3>Submission Date: 23 July 2026</h3>
+<hr />
+<h2>Table of Contents</h2>
+<ol>
+<li>System Overview &amp; Architecture</li>
+<li>Accessing the System (Live Cloud &amp; Local)</li>
+<li>Pre-Seeded User Accounts &amp; RBAC Roles</li>
+<li>Role 1: Administrator Guide</li>
+<li>Role 2: Doctor (JMO) &amp; Mortuary Guide</li>
+<li>Role 3: Laboratory Technician Guide</li>
+<li>Role 4: Viewer Guide (Read-Only &amp; Anonymized Privacy)</li>
+<li>Mortuary &amp; Autopsy Management Module</li>
+<li>Audit Logging &amp; System Notifications</li>
+<li>Troubleshooting &amp; System Maintenance</li>
+</ol>
+<hr />
+<h2>1. System Overview &amp; Architecture</h2>
+<p><strong>ForensiDB</strong> is a web-based enterprise database management system designed specifically for a <strong>Forensic Medicine Department (FMD)</strong> in a teaching or general hospital environment.</p>
+<p>It streamlines the complete medico-legal workflow:
+- <strong>Patient &amp; Victim Records</strong>: Centralized registration with strict NIC/Passport uniqueness.
+- <strong>Forensic Case Lifecycle</strong>: Comprehensive tracking of Clinical Forensic cases, Autopsies, and Combined cases.
+- <strong>Mortuary &amp; Autopsies</strong>: Body intake, mortuary cooler allocation, autopsy scheduling, Cause-of-Death recording, and formal body release.
+- <strong>Laboratory Evidence &amp; Chain of Custody</strong>: Barcode tracking, physical evidence handling logs, and toxicology/DNA laboratory test requests.
+- <strong>Court Reports</strong>: Automated generation of Medico-Legal Examination Certificates (MLEC) and formal Autopsy Reports for judicial submission.
+- <strong>Role-Based Access Control (RBAC)</strong>: Strict role segregation (Administrator, Doctor, Lab Technician, Viewer, Superuser) ensuring patient data privacy and legal chain-of-custody compliance.</p>
+<hr />
+<h2>2. Accessing the System (Live Cloud &amp; Local)</h2>
+<h3>🌐 Option A: Live AWS Cloud Deployment (Recommended for Lecturer Review)</h3>
+<ul>
+<li><strong>Live Application URL:</strong> <code>https://forensicdb-group22.duckdns.org/</code></li>
+<li><strong>Django Admin Portal:</strong> <code>https://forensicdb-group22.duckdns.org/admin/</code></li>
+<li><strong>SSL Security:</strong> Secured with DuckDNS and Let's Encrypt HTTPS certificates running on Nginx + Gunicorn on AWS EC2.</li>
+</ul>
+<h3>💻 Option B: Running Locally (Windows Environment)</h3>
+<h4>Step 1: Start MySQL Database Service</h4>
+<ol>
+<li>Press <code>Win + R</code>, type <code>services.msc</code>, and press <strong>Enter</strong>.</li>
+<li>Locate <strong>MYSQL80</strong> in the list.</li>
+<li>Right-click → <strong>Start</strong>.
+<em>(Or run in PowerShell as Administrator: <code>Start-Service MYSQL80</code>)</em></li>
+</ol>
+<h4>Step 2: Launch Django Server</h4>
+<ol>
+<li>Open PowerShell or Command Prompt.</li>
+<li>Navigate to the project directory:
+   <code>powershell
+   cd "e:\Database Project"</code></li>
+<li>Run the development server:
+   <code>powershell
+   python manage.py runserver</code></li>
+<li>Access in your browser: <code>http://127.0.0.1:8000/</code></li>
+</ol>
+<hr />
+<h2>3. Pre-Seeded User Accounts &amp; RBAC Roles</h2>
+<p>The system uses <strong>Role-Based Access Control (RBAC)</strong> to ensure staff only see views and data relevant to their medical or administrative duties.</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Username</th>
+<th>Password</th>
+<th>User Full Name</th>
+<th>Primary Access Scope &amp; Dashboards</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>👑 <strong>Administrator</strong></td>
+<td><code>admin</code></td>
+<td><code>Admin@123</code></td>
+<td>System Admin</td>
+<td>Full system control, account management, audit logs, system-wide KPI cards</td>
+</tr>
+<tr>
+<td>🩺 <strong>Consultant JMO</strong></td>
+<td><code>dr_perera</code></td>
+<td><code>Doctor@123</code></td>
+<td>Dr. Samantha Perera</td>
+<td>Case management, clinical exams, autopsies, court report generation</td>
+</tr>
+<tr>
+<td>🩺 <strong>Senior JMO</strong></td>
+<td><code>dr_silva</code></td>
+<td><code>Doctor@123</code></td>
+<td>Dr. Nimal Silva</td>
+<td>Clinical examinations, autopsy entries, medico-legal documentation</td>
+</tr>
+<tr>
+<td>🧪 <strong>Lab Technician</strong></td>
+<td><code>lab_tech</code></td>
+<td><code>Lab@123</code></td>
+<td>Nuwan Karunaratne</td>
+<td>Evidence handling, physical chain of custody, toxicology &amp; DNA lab test results</td>
+</tr>
+<tr>
+<td>👁️ <strong>Viewer</strong></td>
+<td><code>viewer</code></td>
+<td><code>View@123</code></td>
+<td>Saman Dissanayake</td>
+<td>Read-only departmental overview, aggregated trends, masked patient PII</td>
+</tr>
+<tr>
+<td>⚡ <strong>Django Superuser</strong></td>
+<td><code>superuser</code></td>
+<td><code>Superuser@123</code></td>
+<td>Django Superuser</td>
+<td>Direct Django Admin portal root access (<code>/admin/</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>4. Role 1: Administrator Guide</h2>
+<p>The <strong>Administrator</strong> has overarching governance over user accounts, security audit trails, and global departmental statistics.</p>
+<h3>4.1 Administrator Dashboard Overview</h3>
+<p>Upon logging in as <code>admin</code>:
+- <strong>6 System KPI Cards</strong>: Displays Total Cases, Active Cases, Total Patients, Pending Evidence, Pending Reports, and Locked User Accounts.
+- <strong>System Activity Log</strong>: Full real-time audit trail of all staff logins, logouts, case creations, and status modifications.
+- <strong>Auto-Dismiss Toast Banner</strong>: Fades away smoothly after 4 seconds to welcome the administrator.</p>
+<h3>4.2 Managing User Accounts &amp; Security</h3>
+<ol>
+<li>Navigate to <strong>Admin Panel</strong> (<code>/admin/</code>).</li>
+<li>Select <strong>System Users</strong> (<code>CustomUser</code>).</li>
+<li><strong>To Create a User:</strong></li>
+<li>Click <strong>Add CustomUser</strong>.</li>
+<li>Fill in username, password, full name, and email.</li>
+<li>Assign the appropriate <strong>Role</strong>: <code>Administrator</code>, <code>Doctor</code>, <code>LabTechnician</code>, or <code>Viewer</code>.</li>
+<li><strong>To Unlock a Locked Account:</strong></li>
+<li>Accounts auto-lock after 5 consecutive failed login attempts (enforced via database trigger <code>trg_AccountLockout</code>).</li>
+<li>Locate the locked user, uncheck <code>Is locked</code>, reset <code>Login attempts</code> to <code>0</code>, and click <strong>Save</strong>.</li>
+</ol>
+<h3>4.3 Monitoring System Activity Audit Logs</h3>
+<ol>
+<li>Administrators can view the <strong>System Activity Log</strong> directly on their home dashboard or under <code>/admin/core/activitylog/</code>.</li>
+<li>Displays timestamped events with user role badges, action types (<code>CREATE</code>, <code>UPDATE</code>, <code>LOGIN</code>, <code>LOGOUT</code>), record IDs, and client IP addresses.</li>
+</ol>
+<hr />
+<h2>5. Role 2: Doctor (JMO) &amp; Mortuary Guide</h2>
+<p>The <strong>Doctor (Judicial Medical Officer)</strong> manages clinical examinations, autopsies, cause-of-death declarations, and legal court report submissions.</p>
+<h3>5.1 Doctor Workspace Dashboard</h3>
+<p>Upon logging in as <code>dr_perera</code> or <code>dr_silva</code>:
+- <strong>Doctor Specific KPIs</strong>: Shows assigned active cases, pending autopsy reports, and medico-legal forms requiring attention.
+- <strong>Clean Sidebar Menu</strong>: Filtered specifically for clinical, postmortem, evidence, and report modules.</p>
+<h3>5.2 Case &amp; Patient Management</h3>
+<ol>
+<li>Click <strong>Cases</strong> in the sidebar to view all assigned cases.</li>
+<li>Click <strong>Open New Case</strong> to register a new medico-legal incident linked to a patient.</li>
+<li>Search and filter by Case Number, Patient Name, Priority, or Case Type.</li>
+</ol>
+<h3>5.3 Clinical Examinations (Living Patients)</h3>
+<ol>
+<li>Open a case from the case list.</li>
+<li>Under <strong>Clinical Examinations</strong>, click <strong>Add Examination</strong>.</li>
+<li>Fill in:</li>
+<li>Examination Date &amp; Time.</li>
+<li>Injury Details, Wound Descriptions, and Anatomical Diagrams.</li>
+<li>Causative Weapon Classification (blunt, sharp, firearm, thermal).</li>
+<li>Referral requirements and treatment recommendations.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<h3>5.4 Court Report Generation &amp; Approval Workflow</h3>
+<ol>
+<li>Open a case and click <strong>Generate Court Report</strong>.</li>
+<li>Select Report Type: <em>Clinical Report</em>, <em>Postmortem Report</em>, or <em>Combined Medico-Legal Report</em>.</li>
+<li>Enter Court Name, Court Case Number, Magistrate District, and Legal Opinion.</li>
+<li>Set status to <code>Draft</code>, then update to <code>Generated</code> or <code>Submitted</code> upon formal court delivery.</li>
+</ol>
+<hr />
+<h2>6. Role 3: Laboratory Technician Guide</h2>
+<p>The <strong>Lab Technician</strong> handles physical evidence items, maintains chain-of-custody logs, and enters laboratory test results.</p>
+<h3>6.1 Laboratory Workspace Dashboard</h3>
+<p>Upon logging in as <code>lab_tech</code>:
+- Displays <strong>Pending Evidence Items</strong> and <strong>Pending Lab Tests</strong> requiring processing.
+- Direct quick-links to physical evidence inventory and lab testing queues.</p>
+<h3>6.2 Evidence Intake &amp; Barcode Scanning</h3>
+<ol>
+<li>Click <strong>Evidence</strong> in the sidebar.</li>
+<li>Click <strong>New Evidence Item</strong> or use <strong>Barcode Lookup</strong> to scan an item tag.</li>
+<li>Fill in evidence type (Blood sample, Viscera, Clothing, Weapon, DNA swab), storage location, and collection date.</li>
+</ol>
+<h3>6.3 Chain of Custody Logging</h3>
+<ol>
+<li>Open any evidence record.</li>
+<li>Click <strong>Log Custody Action</strong>.</li>
+<li>Record action: <code>Collected</code>, <code>Transferred</code>, <code>Analysed</code>, <code>Returned</code>, or <code>Disposed</code>.</li>
+<li>Enter From/To Locations, Handled By, Purpose, and Condition Notes.</li>
+<li><em>Database Rule</em>: The system automatically blocks custody logging for disposed/destroyed items via database integrity constraints.</li>
+</ol>
+<h3>6.4 Processing Lab Tests &amp; Automated Status Updates</h3>
+<ol>
+<li>Open an evidence item and click <strong>Add Lab Test</strong> (e.g. <em>Toxicology Screening</em>, <em>DNA Profiling</em>, <em>Histopathology</em>).</li>
+<li>Once testing is complete, click <strong>Enter Results</strong>.</li>
+<li>Fill in result details and set status to <code>Completed</code>.</li>
+<li><strong>Automated Database Trigger:</strong> Marking a test as <code>Completed</code> automatically updates the parent evidence item's analysis status to <code>Completed</code> via trigger <code>trg_LabTestCompleteUpdateEvidence</code>.</li>
+</ol>
+<hr />
+<h2>7. Role 4: Viewer Guide (Read-Only &amp; Anonymized Privacy)</h2>
+<p>The <strong>Viewer</strong> role (<code>viewer</code>) is designed for administrative oversight, research, and high-level departmental reporting without compromising confidential patient PII.</p>
+<h3>7.1 Anonymized Patient Privacy Controls</h3>
+<ul>
+<li><strong>Patient PII Masking:</strong> When logged in as <code>viewer</code>, sensitive personal data (Full Name, NIC/Passport, Phone Numbers, Address, Emergency Contact) are automatically masked across all pages.</li>
+<li><strong>Patient Identifiers:</strong> Displays anonymous identifiers (e.g. <code>Patient #PAT-00007</code>) in case lists, recent cases tables, and detail views.</li>
+<li><strong>Read-Only Restrictions:</strong> Create, Edit, Delete, and Status Change buttons are hidden and restricted by backend authorization decorators (<code>@not_viewer</code>).</li>
+</ul>
+<hr />
+<h2>8. Mortuary &amp; Autopsy Management Module</h2>
+<p>The <strong>Mortuary &amp; Autopsies</strong> module (<code>/postmortem/</code>) is accessible via the sidebar under <strong>Core Modules</strong>.</p>
+<h3>8.1 Body Intake &amp; Mortuary Cooler Allocation</h3>
+<ul>
+<li><strong>Deceased Intake:</strong> Register deceased body arrival time, police report reference, and inquest order date.</li>
+<li><strong>Mortuary Tracking:</strong> Assign Body Tag Numbers (<code>body_tag_no</code>) and Mortuary Refrigerator / Cooler Chamber numbers (<code>cooler_number</code>).</li>
+</ul>
+<h3>8.2 Autopsy &amp; Postmortem Examination</h3>
+<ol>
+<li>Under <strong>Mortuary &amp; Autopsies</strong>, click <strong>Add Postmortem Record</strong>.</li>
+<li>Record Autopsy Date, Start/End Times, Location, and Pathologist findings.</li>
+<li><strong>ICD Cause of Death Chain:</strong></li>
+<li><strong>Ia:</strong> Immediate Cause of Death.</li>
+<li><strong>Ib:</strong> Underlying Cause (due to).</li>
+<li><strong>Ic:</strong> Primary Cause of Death.</li>
+<li><strong>II:</strong> Other Significant Contributing Conditions.</li>
+<li><strong>Death Classification:</strong> Select from <code>Homicide</code>, <code>Suicide</code>, <code>Accident</code>, <code>Natural</code>, or <code>Undetermined</code>.</li>
+<li><em>Business Rule</em>: Enforces a 1-to-1 relationship between a Forensic Case and a Postmortem record.</li>
+</ol>
+<h3>8.3 Body Release &amp; Handover Tracking</h3>
+<ul>
+<li>Records formal release of deceased bodies to Next of Kin or Police Officers.</li>
+<li>Tracks <code>released_to_name</code>, <code>relation</code>, <code>nic_no</code>, and official release timestamp for legal clearance.</li>
+</ul>
+<hr />
+<h2>9. Audit Logging &amp; System Notifications</h2>
+<h3>9.1 Database-Level Audit Triggers</h3>
+<p>The MySQL database enforces automated audit logging independently of application code:
+- <strong><code>trg_AccountLockout</code></strong>: Auto-locks accounts after 5 failed login attempts.
+- <strong><code>trg_CaseStatusChangeLog</code></strong>: Writes an audit log entry whenever a case status changes.
+- <strong><code>trg_PreventCompletedEvidenceDeletion</code></strong>: Blocks deletion of completed evidence items.
+- <strong><code>trg_CourtReportSubmissionLog</code></strong>: Logs formal submission of court reports.</p>
+<h3>9.2 Auto-Dismissing Toast Messages</h3>
+<p>Upon login, users receive a non-intrusive, role-aware toast notification at the top of the content area that automatically fades away after <strong>4 seconds</strong>.</p>
+<hr />
+<h2>10. Troubleshooting &amp; System Maintenance</h2>
+<table>
+<thead>
+<tr>
+<th>Problem / Error</th>
+<th>Cause</th>
+<th>Recommended Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Account Locked on Login</strong></td>
+<td>5 consecutive failed password attempts</td>
+<td>Log in as <code>admin</code> or <code>superuser</code> in <code>/admin/</code> and uncheck <code>Is locked</code>.</td>
+</tr>
+<tr>
+<td><strong>Server Error (500) on Status Update</strong></td>
+<td>MySQL trigger user reference mismatch</td>
+<td>Fixed in latest update. Ensure <code>python manage.py check</code> reports clean status.</td>
+</tr>
+<tr>
+<td><strong>"NIC/Passport Already Exists"</strong></td>
+<td>Patient already registered in database</td>
+<td>Search patient list by NIC or name to open existing record.</td>
+</tr>
+<tr>
+<td><strong>Cannot Delete Evidence Item</strong></td>
+<td>Analysis status is <code>Completed</code></td>
+<td>Completed evidence cannot be deleted to preserve court chain of custody.</td>
+</tr>
+<tr>
+<td><strong>Page Not Loading (Local)</strong></td>
+<td>Django server stopped</td>
+<td>Open terminal and run <code>python manage.py runserver</code>.</td>
+</tr>
+<tr>
+<td><strong>Database Connection Error</strong></td>
+<td>MySQL service stopped</td>
+<td>Start <code>MYSQL80</code> service via Windows Services.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>End of User Guide</em><br />
+<em>ForensiDB v1.0 — Group 22 — Department of Computer Engineering — University of Peradeniya</em><br />
+<em>CO2050 Database Systems — 23 July 2026</em></p>
+</body>
+</html>
