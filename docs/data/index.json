@@ -1,0 +1,42 @@
+{
+    "title": "ForensiX Medico-Forensic DBMS",
+    "description": "A comprehensive role-based enterprise database management system designed for Forensic Medicine Departments to securely manage forensic cases, clinical examinations, postmortems, evidence chains of custody, and court reports.",
+    "team": [
+        {
+            "name": "R.M.S.S. Kumara",
+            "email": "e22203@eng.pdn.ac.lk",
+            "eNumber": "E/22/203"
+        },
+        {
+            "name": "A.W.H. Panchani",
+            "email": "e22269@eng.pdn.ac.lk",
+            "eNumber": "E/22/269"
+        },
+        {
+            "name": "K.D. Ashen",
+            "email": "e22032@eng.pdn.ac.lk",
+            "eNumber": "E/22/032"
+        },
+        {
+            "name": "W.A.N. Gunathilaka",
+            "email": "e22121@eng.pdn.ac.lk",
+            "eNumber": "E/22/121"
+        }
+    ],
+    "supervisors": [
+        {
+            "name": "Mr. Biswajith Dissanayake",
+            "email": "biswajithd@eng.pdn.ac.lk"
+        }
+    ],
+    "tags": [
+        "Database Systems",
+        "Web Application",
+        "Django",
+        "MySQL",
+        "Forensic Science",
+        "Role-Based Access Control"
+    ],
+    "image": "cover_page.jpg",
+    "thumbnail": "thumbnail.jpg"
+}
