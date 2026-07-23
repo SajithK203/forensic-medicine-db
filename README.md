@@ -55,7 +55,7 @@
     <td><b>Group Number</b></td>
     <td>Group 22</td>
     <td><b>Lecturer</b></td>
-    <td>Mr. Biswajith</td>
+    <td>Mr. Biswajith Dissanayake</td>
   </tr>
   <tr>
     <td><b>Submission Date</b></td>
