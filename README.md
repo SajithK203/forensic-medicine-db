@@ -136,8 +136,8 @@ Use these test accounts to evaluate the system's **Role-Based Access Control (RB
 
 #### Step 2.1 — Clone the Repository
 ```bash
-git clone https://github.com/SajithK203/forensic-medicine-db.git
-cd forensic-medicine-db
+git clone https://github.com/cepdnaclk/e22-co226-ForensiX-Medico-Forensic-DBMS.git
+cd e22-co226-ForensiX-Medico-Forensic-DBMS
 ```
 
 #### Step 2.2 — Install Python Dependencies
@@ -221,7 +221,7 @@ Open browser → **`http://127.0.0.1:8000/`**
 ## 📁 Repository Folder Structure
 
 ```
-forensic-medicine-db/
+e22-co226-ForensiX-Medico-Forensic-DBMS/
 ├── apps/
 │   ├── accounts/         # Authentication, RBAC, lockout protection
 │   ├── core/             # Dashboard, activity log, notifications
